@@ -1,0 +1,17 @@
+#!/bin/bash
+
+msg "Exporting global environment variables..."
+
+export CLICOLOR=1
+
+export GH_REGISTRY_TOKEN=
+export GH_REGISTRY_USERNAME=
+
+export JAVA_INCLUDE_PATH="/opt/homebrew/opt/openjdk/include"
+# To be used as follows
+#export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+
+# export M2_HOME=/opt/maven
+# export MAVEN_HOME=/opt/maven
+
+successmsg "Exports done. ${CHECK}"

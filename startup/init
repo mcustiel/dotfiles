@@ -1,0 +1,31 @@
+#!/bin/bash
+
+CURDIR=~/Development/startup
+
+. $CURDIR/functions
+. $CURDIR/aliases
+. $CURDIR/exports
+. $CURDIR/path
+. $CURDIR/ssh-keys
+. $CURDIR/tools
+
+importantmsg "Useful commands: "
+
+infomsg " - mdcd [dirname]                     - Creates directory dirname and gets into it"
+infomsg " - mip [dir]/[file_a] [file_b]        - Moves dir/file_a to dir/file_b"
+infomsg " - cip [dir]/[file_a] [file_b]        - Copies dir/file_a to dir/file_b"
+infomsg " - cipr [dir]/[file_a] [new-file_b]   - Copies dir/file_a to dir/file_b recursively"
+echo
+
+infomsg " - show <dirname>                     - Opens dirname in file explorer"
+infomsg " - dev <dirname>                      - Opens dirname in IDE"
+echo
+
+infomsg " - tl                                 - List files as a tree"
+infomsg " - dsrc                               - Stop all running docker containers"
+echo
+
+infomsg " - goto-*                             - Jump to projects folders directly"
+echo
+
+fun

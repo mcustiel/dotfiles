@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# If ssh keys were not added yet, add all keys
+
+msg "Registering SSH keys..."
+
+PPKDIR=~/.ssh
+EXT=".pub"
+
+for key in $(ls $PPKDIR/*$EXT) ; do
+    # Add only private keys to ssh-agent
+    PRIVATE_KEY=${key/$EXT/}
+    if ssh-add -l | grep -q $PRIVATE_KEY ; then
+        infomsg "${PRIVATE_KEY} was already added, skipping."
+    else
+        infomsg "Adding ${PRIVATE_KEY} to ssh-agent."
+        ssh-add ${key/$EXT/}
+        infomsg "${PRIVATE_KEY} added."
+    fi
+done
+successmsg "SSH Keys done. ${CHECK}"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+api=https://api.chucknorris.io/jokes/random
+contents=$(curl -s $api)
+
+if [ "$(echo $contents | jq -r '.value')" != "" ] ; then
+	echo $(echo $contents | jq -r '.value')
+fi

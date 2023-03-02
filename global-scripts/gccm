@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Conventional commits helper
+
+set -e
+set -o nounset
+
+fail () {
+	echo $1 > /dev/stderr
+	exit 1
+}
+
+if [ "$1" = "-h" ]; then
+	echo
+	echo "Usage: gcmm [conventional commit prefix] [commit message] [scope (optional)]"
+	echo "Example: gcmm chore 'My commit message'"
+	echo
+	exit 0
+fi
+
+TYPE=$1
+MESSAGE=$2
+SCOPE=""
+
+TYPE_OK=0
+TYPES_LIST=("fix" "feat" "chore" "build" "ci" "docs" "style" "refactor" "perf" "test")
+for type in ${TYPES_LIST[@]}; do
+	if [ "$TYPE" = "$type" ]; then
+		TYPE_OK=1
+	fi
+done
+
+if [ "$TYPE_OK" = "0" ]; then
+	fail "Error: Invalid type $TYPE, expected one of (${TYPES_LIST[*]})"
+fi
+
+if [[ -z ${3-} ]]; then
+	CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+	# First split by - char into an array
+	set -- "$CURRENT_BRANCH"
+	IFS="-"; declare -a ARRAY=($*)
+	# echo "${ARRAY[*]}"
+	if [[ ! -z "${ARRAY[0]+defined}" ]] && [[ ! -z "${ARRAY[1]+defined}" ]] ; then
+        	SCOPE="(${ARRAY[0]}-${ARRAY[1]})"
+	fi
+else
+	SCOPE="($3)"
+fi
+
+COMMIT_MESSAGE=$(echo "$TYPE$SCOPE: $MESSAGE" | awk '{print tolower($0)}')
+
+# Prepend the ticket name into the message
+echo "git commit -m $COMMIT_MESSAGE"
+git commit -m "$COMMIT_MESSAGE"

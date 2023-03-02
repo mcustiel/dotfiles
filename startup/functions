@@ -1,0 +1,70 @@
+#!/bin/bash
+
+echo "Setting up message functions..."
+
+WORKSPACE_PATH=~/ws
+MC_DOTFILES_PATH=~/.mcustiel
+
+CHECK="\xE2\x9C\x94"
+CROSS="\xE2\x9D\x8C\x0A"
+
+function resetcolors {
+    echo -n -e "\033[0m"
+}
+
+function importantmsg {
+    echo -e "\033[1m$1"
+    resetcolors
+}
+
+function errormsg {
+    echo -e "\033[91m$1"
+    resetcolors
+}
+
+function infomsg {
+    echo -e "\033[94m$1"
+    resetcolors
+}
+
+function msg {
+    echo -e "$1"
+    resetcolors
+}
+
+function successmsg {
+    echo -e "\033[92m$1"
+    resetcolors
+}
+
+msg "Setting up general functions..."
+
+function cdws {
+    cd $WORKSPACE_PATH/$1
+}
+
+function gpuob {
+    git push -u origin $(git rev-parse --abbrev-ref HEAD)
+}
+
+function gdcommits {
+   git log --graph --pretty=format:'%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(cyan)(%cr)%Creset' --abbrev-commit --date=relative $(git symbolic-ref --short HEAD)..$1
+}
+
+function mdcd {
+    mkdir $1 && cd $1
+}
+
+function mvip {
+    mv $1 $(realpath $(dirname $1))/$2
+}
+
+function cpip {
+    cp $1 $(realpath $(dirname $1))/$2
+}
+
+function cpipr {
+    cp -r $1 $(realpath $(dirname $1))/$2
+}
+
+successmsg "Functions done. ${CHECK}"
