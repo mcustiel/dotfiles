@@ -1,48 +1,5 @@
 #!/bin/bash
 
-echo "Setting up message functions..."
-
-WORKSPACE_PATH=~/ws
-export MC_DOTFILES_PATH=~/.mcustiel
-
-CHECK="\xE2\x9C\x94"
-CROSS="\xE2\x9D\x8C\x0A"
-ANSI_OPEN="\033["
-
-function resetcolors {
-    echo -n -e "${ANSI_OPEN}0m"
-}
-
-function importantmsg {
-    echo -e "${ANSI_OPEN}1m$1"
-    resetcolors
-}
-
-function errormsg {
-    echo -e "${ANSI_OPEN}91m$1"
-    resetcolors
-}
-
-function infomsg {
-    echo -e "${ANSI_OPEN}94m$1"
-    resetcolors
-}
-
-function warnmsg {
-    echo -e "${ANSI_OPEN}93m$1"
-    resetcolors
-}
-
-function msg {
-    echo -e "$1"
-    resetcolors
-}
-
-function successmsg {
-    echo -e "${ANSI_OPEN}92m$1"
-    resetcolors
-}
-
 msg "Setting up general functions..."
 
 function cdws {

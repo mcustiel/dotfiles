@@ -2,11 +2,9 @@
 
 msg "Setting up paths..."
 
-JAVA_PATH=/opt/homebrew/opt/openjdk
-YARN_BIN_PATH=~/.yarn/bin # $ yarn global bin
-GLOBAL_SCRIPTS_PATH=~/.mcustiel/global-scripts/
-GCLOUD_PATH=~/opt/google-cloud-sdk
+YARN_BIN_PATH=$HOME/.yarn/bin # $ yarn global bin
+GLOBAL_SCRIPTS_PATH=$HOME/.mcustiel/global-scripts/
 
-export PATH=${GCLOUD_PATH}/bin:${JAVA_PATH}/bin:${M2_HOME}/bin:${GLOBAL_SCRIPTS_PATH}:${YARN_BIN_PATH}:${NVM_BIN}:${PATH}
+export PATH=${GLOBAL_SCRIPTS_PATH}:${YARN_BIN_PATH}:${PATH}
 
 successmsg "Paths done. ${CHECK}"

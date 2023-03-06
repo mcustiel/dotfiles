@@ -13,6 +13,12 @@ export JAVA_INCLUDE_PATH="/opt/homebrew/opt/openjdk/include"
 
 # export M2_HOME=/opt/maven
 # export MAVEN_HOME=/opt/maven
-export MC_CURRENT_OS=$(uname -s)
+MC_CURRENT_OS="$(uname -s)"
+export MC_CURRENT_OS
+
+export MC_WORKSPACE_PATH="$HOME/ws"
+
+export CHECK="\xE2\x9C\x94"
+export CROSS="\xE2\x9D\x8C\x0A"
 
 successmsg "Exports done. ${CHECK}"

@@ -66,11 +66,12 @@ vo.shiftwidth = 2
 
 vim.api.nvim_create_autocmd(
 	"BufWritePre", {
-	-- FileType c,cpp,java,php autocmd BufWritePre <buffer>
+	-- FileType c,cpp,java,php,sh autocmd BufWritePre <buffer>
 	pattern = {
 		"*.c", "*.h",
 		"*.ts", "*.json", "*.js", "*.yaml",
 		"*.php", "*.java",
+		"*.sh",
 		"Makefile",
 		"*.lua",
 	},

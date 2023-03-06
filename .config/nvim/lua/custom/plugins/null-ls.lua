@@ -8,5 +8,6 @@ return {
                 null_ls.builtins.diagnostics.tsc,
             },
         })
-    end
+    end,
+    requires = { "nvim-lua/plenary.nvim" },
 }

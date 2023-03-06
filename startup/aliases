@@ -7,15 +7,15 @@ alias mkdir='mkdir -pv'
 alias md='mkdir'
 alias tl='tree -a -C -L 2'
 alias show='open'
-alias dev='code'
-alias vim="nvim"
+# alias dev='code'
+# alias vim="nvim"
 alias dsrc='docker ps -q | xargs -r docker stop'
 
 alias fun="random-chuck-fact"
 
 alias lntfix='yarn lint --fix'
 alias lnt='yarn lint'
-alias tst='yarn test:dev'
+alias tst='yarn test'
 
 # alias goto-sp = 'cdws some-project'
 

@@ -7,12 +7,16 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '~/.mcustiel/dev-tools/google-cloud-sdk/path.bash.inc' ]; then . '~/.mcustiel/dev-tools/google-cloud-sdk/path.bash.inc'; fi
+if [ -f '~/.mcustiel/dev-tools/google-cloud-sdk/path.bash.inc' ]; then 
+  . '~/.mcustiel/dev-tools/google-cloud-sdk/path.bash.inc'; 
+fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '~/.mcustiel/dev-tools/google-cloud-sdk/completion.bash.inc' ]; then . '~/.mcustiel/dev-tools/google-cloud-sdk/completion.bash.inc'; fi
+if [ -f '~/.mcustiel/dev-tools/google-cloud-sdk/completion.bash.inc' ]; then 
+  . '~/.mcustiel/dev-tools/google-cloud-sdk/completion.bash.inc'; 
+fi
 
-if [ "$(uname -e)" == "Darwin" ] ; then
+if [ "$(uname -s)" = "Darwin" ] ; then
   # Homebrew
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -35,11 +39,11 @@ if [ "$(uname -e)" == "Darwin" ] ; then
     fi
 
     case "$command" in
-    enable-plugin|rehash|shell|shell-options)
-      eval `jenv "sh-$command" "$@"`;;
-    *)
-      command jenv "$command" "$@";;
+      enable-plugin|rehash|shell|shell-options)
+        eval "$(jenv "sh-$command" "$@")";;
+      *)
+        command jenv "$command" "$@";;
     esac
   }
-  fi
+fi
 successmsg "Tools done. ${CHECK}"

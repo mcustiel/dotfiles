@@ -1,11 +1,13 @@
 #!/bin/bash
 
-CURDIR=~/Development/startup
+export MC_DOTFILES_PATH="$HOME/.mcustiel"
+CURDIR="$MC_DOTFILES_PATH/startup"
 
-. $CURDIR/functions
-. $CURDIR/aliases
-. $CURDIR/exports
-. $CURDIR/path
-. $CURDIR/tools
+source "$CURDIR/msgfunctions"
+source "$CURDIR/exports"
+source "$CURDIR/functions"
+source "$CURDIR/aliases"
+source "$CURDIR/path"
+source "$CURDIR/tools"
 
 successmsg "Startup successful. $CHECK"
