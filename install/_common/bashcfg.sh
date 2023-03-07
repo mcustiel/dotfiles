@@ -1,19 +1,30 @@
 #!/usr/bin/env bash
 
+ROOT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")"
+
+source "$ROOT_DIR/startup/msgfunctions"
+
+infomsg "Configuring bash"
+
+TPL_DIR="$ROOT_DIR/_templates"
 BASHRC="$HOME/.bashrc"
 BASH_PROFILE="$HOME/.bash_profile"
 
-BASHRC_CONTENTS="$(cat "$BASHRC")"
+if [ -e $BASHRC ] ; then
+	cp "$BASHRC" "$BASHRC.mc.bkp"
+	sed -i '/MCUSTIEL_CONFIG_STARTS/,/MCUSTIEL_CONFIG_ENDS/d' "$BASHRC"
+fi
 
-echo "$BASHRC_CONTENTS" | sed '/MCUSTIEL_CONFIG_STARTS/,/MCUSTIEL_CONFIG_ENDS/d' | sudo tee "$BASHRC" > /dev/null
-sudo cat "$TPL_DIR/bashrc.cfg" | sudo tee -a "$BASHRC" > /dev/null
+if [ -e $BASH_PROFILE ] ; then
+	cp "$BASH_PROFILE" "$BASH_PROFILE.mc.bkp"
+	sed -i '/MCUSTIEL_CONFIG_STARTS/,/MCUSTIEL_CONFIG_ENDS/d' "$BASH_PROFILE"
+fi
+cat "$TPL_DIR/bashrc.cfg" >> "$BASHRC"
+cat "$TPL_DIR/bash_profile.cfg" >> "$BASH_PROFILE"
 
-BASH_PROFILE_CONTENTS="$(cat "$BASH_PROFILE")"
-
-echo "$BASH_PROFILE_CONTENTS" | sed '/MCUSTIEL_CONFIG_STARTS/,/MCUSTIEL_CONFIG_ENDS/d' | sudo tee "$BASHRC" > /dev/null
-sudo cat "$TPL_DIR/bashrc.cfg" | sudo tee -a "$BASH_PROFILE" > /dev/null
-
-if [ "$MC_TEST" = "true" ] ; then
+if [ "$MC_TESTING" = "true" ] ; then
 	cat $BASHRC
 	cat $BASH_PROFILE
 fi
+
+successmsg "Done! ${MC_CHECK}"

@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+ROOT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")"
+
+source "$ROOT_DIR/startup/msgfunctions"
+
 infomsg "Installing config files and scripts..."
 
-ROOT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")"
 CONFIG_DIR="$HOME/.mcustiel"
 
 if [ ! -d "$CONFIG_DIR" ] ; then
@@ -16,8 +19,8 @@ cp -vr "$ROOT_DIR/config" "$CONFIG_DIR/"
 if [ ! -d "$HOME/.config" ]; then
 	mkdir "$HOME/.config"
 fi
-cp -vr "$ROOT_DIR/.config/*" "$HOME/.config/"
+cp -vr "$ROOT_DIR/.config" "$HOME/"
 
-chmod +x "$CONFIG_DIR/global_scripts/*"
+chmod +x "$CONFIG_DIR/global_scripts/"*
 
 successmsg "Done! ${MC_CHECK}"

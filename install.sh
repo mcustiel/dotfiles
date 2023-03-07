@@ -46,4 +46,6 @@ infomsg "Starting installation..."
 
 "/tmp/dotfiles/install/$(uname -s).sh"
 
+rm -rf /tmp/dotfiles
+
 successmsg "Installation completed successfully!"
