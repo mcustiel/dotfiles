@@ -25,6 +25,7 @@ cat "$TPL_DIR/bash_profile.cfg" >> "$BASH_PROFILE"
 if [ "$MC_TESTING" = "true" ] ; then
 	cat $BASHRC
 	cat $BASH_PROFILE
+	ls -Flash /root
 fi
 
 successmsg "Done! ${MC_CHECK}"

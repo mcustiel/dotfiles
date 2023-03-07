@@ -19,8 +19,15 @@ cp -vr "$ROOT_DIR/config" "$CONFIG_DIR/"
 if [ ! -d "$HOME/.config" ]; then
 	mkdir "$HOME/.config"
 fi
-cp -vr "$ROOT_DIR/.config" "$HOME/"
+if [ -d "$HOME/.config/nvim" ]; then
+	mv "$HOME/.config/nvim" "$HOME/.config/nvim.mc.bkp"
+fi
+cp -vr "$ROOT_DIR/.config"/* "$HOME/.config"
 
-chmod +x "$CONFIG_DIR/global_scripts/"*
+chmod +x "$CONFIG_DIR/global_scripts"/*
+
+if [ "$MC_TESTING" = true ]; then
+	ls -Flash "$HOME/.config" "$CONFIG_DIR"
+fi
 
 successmsg "Done! ${MC_CHECK}"
