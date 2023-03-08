@@ -19,6 +19,9 @@ if [ -e $BASH_PROFILE ] ; then
 	cp "$BASH_PROFILE" "$BASH_PROFILE.mc.bkp"
 	sed -i '/MCUSTIEL_CONFIG_STARTS/,/MCUSTIEL_CONFIG_ENDS/d' "$BASH_PROFILE"
 fi
+
+sed -i '/NVM_DIR/d' "$BASHRC"
+
 cat "$TPL_DIR/bashrc.cfg" >> "$BASHRC"
 cat "$TPL_DIR/bash_profile.cfg" >> "$BASH_PROFILE"
 

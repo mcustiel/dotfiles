@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+source "$ROOT_DIR/startup/msgfunctions"
+
+infomsg "Configuring bash-it"
+
 git clone --depth=1 https://github.com/Bash-it/bash-it.git "$HOME/.bash_it"
 "$HOME/.bash_it/install.sh"
 
@@ -27,3 +31,5 @@ bash-it enable plugin nvm
 
 sed -i '/BASH_IT_THEME/d' "$HOME/.bashrc"
 sed -i '/bash_it\.sh/d' "$HOME/.bashrc"
+
+successmsg "Done! ${MC_CHECK}"

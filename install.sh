@@ -2,7 +2,6 @@
 
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 
-set -x
 set -e
 
 function fail {
