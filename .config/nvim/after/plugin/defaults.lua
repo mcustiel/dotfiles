@@ -22,6 +22,7 @@ vo.shiftwidth = 2
 
 vo.foldmethod = "expr"
 vo.foldexpr = "nvim_treesitter#foldexpr()"
+
 -- local term_opts = { silent = true }
 --
 -- Shorten function name
