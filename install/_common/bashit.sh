@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ROOT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")"
+
 source "$ROOT_DIR/startup/msgfunctions"
 
 infomsg "Configuring bash-it"

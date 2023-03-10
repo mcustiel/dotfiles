@@ -6,7 +6,7 @@ else
 	PREFIX="sudo"
 fi
 
-$PREFIX apt-get install -y fd-find ripgrep
+$PREFIX apt-get install -y fd-find ripgrep curl wget
 
 $PREFIX snap install --beta nvim --classic
 
