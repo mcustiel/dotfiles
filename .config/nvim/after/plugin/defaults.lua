@@ -1,5 +1,27 @@
 local opts = { noremap = true, silent = true }
 
+local vo = vim.opt
+
+vo.fileencoding = 'utf-8'
+vo.cmdheight = 2
+vo.conceallevel = 0
+vo.hlsearch = true
+vo.cursorline = true                       -- highlight the current line
+vo.number = true                           -- set numbered lines
+vo.relativenumber = true                   -- set relative numbered lines
+
+vo.guifont = "monospace:h17"               -- the font used in graphical neovim applications
+
+vo.smartcase = true                        -- smart case
+
+-- vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+
+vo.softtabstop = 2
+vo.tabstop = 2
+vo.shiftwidth = 2
+
+vo.foldmethod = "expr"
+vo.foldexpr = "nvim_treesitter#foldexpr()"
 -- local term_opts = { silent = true }
 --
 -- Shorten function name
@@ -8,6 +30,8 @@ local keymap = vim.api.nvim_set_keymap
 -- Display file tree sidebar
 keymap("n", "<leader>y", ":NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", opts)
+keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", opts)
+keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", opts)
 
 -- Switch between windows
 keymap("n", "<leader>h", "<C-w>h", opts)
@@ -43,27 +67,6 @@ keymap("i", "<C-s>", "<ESC>:w<CR>==gi", opts)
 keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", opts)
 keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
-local vo = vim.opt
-
-vo.fileencoding = 'utf-8'
-
-vo.cmdheight = 2
-vo.conceallevel = 0
-vo.hlsearch = true
-vo.cursorline = true                       -- highlight the current line
-vo.number = true                           -- set numbered lines
-vo.relativenumber = true                   -- set relative numbered lines
-
-vo.guifont = "monospace:h17"               -- the font used in graphical neovim applications
-
-vo.smartcase = true                        -- smart case
-
-vo.softtabstop = 2
-vo.tabstop = 2
-vo.shiftwidth = 2
-
--- vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
 vim.api.nvim_create_autocmd(
 	"BufWritePre", {
 	-- FileType c,cpp,java,php,sh autocmd BufWritePre <buffer>
@@ -77,3 +80,10 @@ vim.api.nvim_create_autocmd(
 	},
 	command = '%s/\\s\\+$//e'
 })
+
+vim.api.nvim_create_autocmd(
+	"BufReadPost,FileReadPost", {
+		pattern = {"*"},
+	  command = "normal zR",
+	}
+)

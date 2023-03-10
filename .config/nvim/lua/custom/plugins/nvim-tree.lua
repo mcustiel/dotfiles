@@ -12,8 +12,12 @@ return {
 			group_empty = true,
 		    },
 		    filters = {
-			dotfiles = false,
-		    }
+                       dotfiles = false,
+                       custom = { '\\.git$', '^node_modules$', '^dist$', '^.eslintcache$' },
+		    },
+                   git = {
+                       ignore = false,
+                   },
 		})
 	end
 }
