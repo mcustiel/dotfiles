@@ -1,10 +1,3 @@
--- require("user.options")
--- require("user.keymaps")
--- require("user.plugins")
--- require("user.appearence")
--- require("user.completion")
--- require("user.lsp")
-
 --[[
 
 =====================================================================
@@ -100,7 +93,8 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' }, },
+    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+  },
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -131,8 +125,10 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = true,
-        theme = 'material',
+        icons_enabled = false,
+        theme = 'onedark',
+        component_separators = '|',
+        section_separators = '',
       },
     },
   },
@@ -190,7 +186,6 @@ require('lazy').setup({
   --
   --    An additional note is that if you only copied in the `init.lua`, you can just comment this line
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
-  --
   { import = 'custom.plugins' },
 }, {})
 
@@ -422,6 +417,7 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
+
   tsserver = {},
 
   bashls = {},
