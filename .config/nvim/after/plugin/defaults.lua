@@ -1,6 +1,7 @@
 local opts = { noremap = true, silent = true }
 
 local vo = vim.opt
+-- local vc = vim.cmd
 
 vo.fileencoding = 'utf-8'
 vo.cmdheight = 2
@@ -22,6 +23,11 @@ vo.shiftwidth = 2
 
 vo.foldmethod = "expr"
 vo.foldexpr = "nvim_treesitter#foldexpr()"
+
+vo.colorcolumn = "100,120"
+vim.wo.wrap = false
+
+-- vc[[hi ColorColumn ctermbg=darkgrey guibg=darkgrey]]
 
 -- local term_opts = { silent = true }
 --
