@@ -17,6 +17,6 @@ npm install -g yarn npx npm
 
 export PATH="$PATH:$HOME/.yarn/bin"
 
-yarn global add typescript typescript-language-server eslint neovim tsx gulp
+yarn global add typescript eslint neovim tsx gulp
 
 successmsg "Done! ${MC_CHECK}"

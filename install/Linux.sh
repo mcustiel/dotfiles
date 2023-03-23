@@ -25,6 +25,9 @@ infomsg "Starting installation in LINUX system"
 # Install nvm, node, yarn, typescript, etc
 "$SCRIPT_DIR/_common/node.sh"
 
+# Install language servers for LSP
+"$SCRIPT_DIR/_common/lsp-lang-servers.sh"
+
 # Write config to .bashrc
 "$SCRIPT_DIR/_common/bashcfg.sh"
 

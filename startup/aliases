@@ -2,7 +2,7 @@
 
 msg "Setting up aliases..."
 
-alias ll='ls -Flash'
+alias ll='ls --color=auto -hal'
 alias mkdir='mkdir -pv'
 alias md='mkdir'
 alias tl='tree -a -C -L 2'

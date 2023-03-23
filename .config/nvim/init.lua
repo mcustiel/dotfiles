@@ -413,6 +413,11 @@ end
 --
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
+
+local snippet_support = vim.lsp.protocol.make_client_capabilities()
+snippet_support.textDocument.completion.completionItem.snippetSupport = true
+
+
 local servers = {
   -- clangd = {},
   -- gopls = {},
@@ -429,6 +434,16 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+
+  jsonls = { capabilities = snippet_support },
+
+  docker_compose_language_service = {},
+
+  dockerls = {},
+
+  html = { capabilities = snippet_support },
+
+  yamlls = {},
 }
 
 -- Setup neovim lua configuration

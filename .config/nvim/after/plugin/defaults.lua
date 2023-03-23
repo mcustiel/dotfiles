@@ -3,6 +3,20 @@ local opts = { noremap = true, silent = true }
 local vo = vim.opt
 -- local vc = vim.cmd
 
+local function merge(dest, origin)
+	local merged = {}
+
+	for k,v in pairs(dest) do
+		merged[k] = v
+	end
+
+	for k,v in pairs(origin) do
+		merged[k] = v
+	end
+
+	return merged
+end
+
 vo.fileencoding = 'utf-8'
 vo.cmdheight = 2
 vo.conceallevel = 0
@@ -35,43 +49,46 @@ vim.wo.wrap = false
 local keymap = vim.api.nvim_set_keymap
 
 -- Display file tree sidebar
-keymap("n", "<leader>y", ":NvimTreeToggle<cr>", opts)
-keymap("n", "<leader>t", ":NvimTreeFocus<cr>", opts)
-keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", opts)
-keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", opts)
+keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvim Tree" }))
+keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
+keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show current file in Nvim Tree" }))
+keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
 
 -- Switch between windows
-keymap("n", "<leader>h", "<C-w>h", opts)
-keymap("n", "<leader>j", "<C-w>j", opts)
-keymap("n", "<leader>k", "<C-w>k", opts)
-keymap("n", "<leader>l", "<C-w>l", opts)
+keymap("n", "<leader>h", "<C-w>h", merge(opts, { desc = "Switch to window on the left" }))
+keymap("n", "<leader>j", "<C-w>j", merge(opts, { desc = "Switch to window below" }))
+keymap("n", "<leader>k", "<C-w>k", merge(opts, { desc = "Switch to window above" }))
+keymap("n", "<leader>l", "<C-w>l", merge(opts, { desc = "Switch to window on the right" }))
 
 -- Resize windows with arrows
-keymap("n", "<C-Up>", ":resize +2<CR>", opts)
-keymap("n", "<C-Down>", ":resize -2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
-
--- Move line up or down
-keymap("n", "<left>", ":bp<CR>", opts)
-keymap("n", "<right>", ":bn<CR>", opts)
+keymap("n", "<C-Up>", ":resize +2<CR>", merge(opts, { desc = "Increase window size vertically" }))
+keymap("n", "<C-Down>", ":resize -2<CR>", merge(opts, { desc = "Decrease window size vertically" }))
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", merge(opts, { desc = "Decrease window size horizontally" }))
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", merge(opts, { desc = "Increase window size horizontally" }))
 
 -- Switch buffers
-keymap("n", "<up>", ":m .-2<CR>", opts)
-keymap("n", "<down>", ":m .+1<CR>", opts)
+keymap("n", "<left>", ":bp<CR>", merge(opts, { desc = "Switch to previous buffer" }))
+keymap("n", "<right>", ":bn<CR>", merge(opts, { desc = "Switch to next buffer" }))
+
+-- Move line up or down
+keymap("n", "<up>", ":m .-2<CR>", merge(opts, { desc = "Move line up" }))
+keymap("n", "<down>", ":m .+1<CR>", merge(opts, { desc = "Move line down" }))
+
+-- Toggle autosave
+keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
 
 -- Insert --
 -- Press jk fast to enter normal mode
-keymap("i", "jk", "<ESC>", opts)
+keymap("i", "jk", "<ESC>", merge(opts, { desc = "Exit insert mode and switch to normal mode" }))
 -- Move line up or down
-keymap("i", "<up>", "<ESC>:m .-2<CR>==gi", opts)
-keymap("i", "<down>", "<ESC>:m .+1<CR>==gi", opts)
+keymap("i", "<up>", "<ESC>:m .-2<CR>==gi", merge(opts, { desc = "Move line up" }))
+keymap("i", "<down>", "<ESC>:m .+1<CR>==gi", merge(opts, { desc = "Decrease window size vertically" }))
 -- save file
-keymap("i", "<C-s>", "<ESC>:w<CR>==gi", opts)
+keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window size vertically" }))
 
 -- Visual --
 -- Move line up or down
-keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", opts)
+keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", merge(opts, { desc = "Decrease window size vertically" }))
 keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
 vim.api.nvim_create_autocmd(
