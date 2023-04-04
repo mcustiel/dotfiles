@@ -53,11 +53,11 @@ return {
     require('mason-nvim-dap').setup_handlers()
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue)
-    vim.keymap.set('n', '<F1>', dap.step_into)
-    vim.keymap.set('n', '<F2>', dap.step_over)
-    vim.keymap.set('n', '<F3>', dap.step_out)
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
+    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Continue"})
+    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step into"})
+    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step over"})
+    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step out"})
+    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = "[DEBUG] Toggle breakpoint"})
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end)

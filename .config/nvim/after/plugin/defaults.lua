@@ -18,7 +18,6 @@ local function merge(dest, origin)
 end
 
 vo.fileencoding = 'utf-8'
-vo.cmdheight = 2
 vo.conceallevel = 0
 vo.hlsearch = true
 vo.cursorline = true                       -- highlight the current line
@@ -29,8 +28,6 @@ vo.guifont = "monospace:h17"               -- the font used in graphical neovim 
 
 vo.smartcase = true                        -- smart case
 
--- vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
 vo.softtabstop = 2
 vo.tabstop = 2
 vo.shiftwidth = 2
@@ -38,7 +35,7 @@ vo.shiftwidth = 2
 vo.foldmethod = "expr"
 vo.foldexpr = "nvim_treesitter#foldexpr()"
 
-vo.colorcolumn = "100,120"
+vo.colorcolumn = "80,100,120"
 vim.wo.wrap = false
 
 -- vc[[hi ColorColumn ctermbg=darkgrey guibg=darkgrey]]
@@ -46,13 +43,17 @@ vim.wo.wrap = false
 -- local term_opts = { silent = true }
 --
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
+-- local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 -- Display file tree sidebar
 keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvim Tree" }))
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
 keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show current file in Nvim Tree" }))
 keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
+
+-- Search
+keymap('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
 -- Switch between windows
 keymap("n", "<leader>h", "<C-w>h", merge(opts, { desc = "Switch to window on the left" }))
@@ -76,6 +77,10 @@ keymap("n", "<down>", ":m .+1<CR>", merge(opts, { desc = "Move line down" }))
 
 -- Toggle autosave
 keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
+
+-- Close buffers
+keymap("n", "<leader>xa", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
+keymap("n", "<leader>xe", ":%bd|e#<CR>", merge(opts, { desc = "Close all buffers except current one" }))
 
 -- Insert --
 -- Press jk fast to enter normal mode

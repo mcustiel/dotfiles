@@ -10,6 +10,7 @@ return {
 		    sort_by = "case_sensitive",
 		    renderer = {
 			group_empty = true,
+			highlight_opened_files = 'all',
 		    },
 		    filters = {
                        dotfiles = false,
@@ -17,7 +18,10 @@ return {
 		    },
                    git = {
                        ignore = false,
-                   },
+                    },
+		    view = {
+			width = 40,
+		    }
 		})
 	end
 }
