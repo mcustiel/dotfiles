@@ -295,7 +295,7 @@ require('nvim-treesitter.configs').setup {
     -- 'python', 'rust',
     'tsx', 'typescript', 'html',
     'java',
-    'help', 'vim', 'lua',
+    'vimdoc', 'vim', 'lua',
     'regex',
   },
 
