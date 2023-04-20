@@ -53,7 +53,7 @@ keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show cu
 keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
 
 -- Search
-keymap('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+keymap('n', '<leader>sc', require('telescope.builtin').resume, { desc = '[S]earch [C]ontinue' })
 
 -- Switch between windows
 keymap("n", "<leader>h", "<C-w>h", merge(opts, { desc = "Switch to window on the left" }))

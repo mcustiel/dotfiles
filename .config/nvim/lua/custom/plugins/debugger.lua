@@ -20,7 +20,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-  --   'leoluz/nvim-dap-go',
+    --   'leoluz/nvim-dap-go',
     "mxsdev/nvim-dap-vscode-js",
 
     {
@@ -46,11 +46,19 @@ return {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
       },
+      handlers = {
+        function(config)
+          -- all sources with no handler get passed here
+
+          -- Keep original functionality
+          require('mason-nvim-dap').default_setup(config)
+        end,
+      },
     }
 
     -- You can provide additional configuration to the handlers,
     -- see mason-nvim-dap README for more information
-    require('mason-nvim-dap').setup_handlers()
+    -- require('mason-nvim-dap').setup_handlers()
 
     -- Basic debugging keymaps, feel free to change to your liking!
     vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Continue"})
