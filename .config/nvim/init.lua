@@ -79,7 +79,7 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      'williamboman/mason.nvim',
+      { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -167,9 +167,7 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    config = function()
-      pcall(require('nvim-treesitter.install').update { with_sync = true })
-    end,
+    build = ":TSUpdate",
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -294,7 +292,7 @@ require('nvim-treesitter.configs').setup {
     -- 'python', 'rust',
     'tsx', 'typescript', 'javascript',
     'java', 'php',
-    'help', 'vim', 'lua',
+    'vim', 'vimdoc', 'lua',
     'bash', 'regex',
     'json', 'yaml', 'html',
   },
@@ -422,7 +420,7 @@ snippet_support.textDocument.completion.completionItem.snippetSupport = true
 
 local servers = {
   -- clangd = {},
-  -- gopls = {},
+   gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
 

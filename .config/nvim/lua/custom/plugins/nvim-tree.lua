@@ -20,7 +20,7 @@ return {
                        ignore = false,
                     },
 		    view = {
-			width = 40,
+			width = 36,
 		    }
 		})
 	end
