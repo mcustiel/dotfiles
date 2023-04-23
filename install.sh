@@ -28,12 +28,14 @@ if [ "$MC_TESTING" = "false" ]; then
 	[ -d "$SSH_CFG" ] || mkdir "$SSH_CFG"
 	chmod 0700 "$SSH_CFG"
 	ssh-keyscan github.com > "$SSH_CFG/known_hosts"
-	chmod 0400 "$SSH_CFG/known_hosts"
+	chmod 0600 "$SSH_CFG/known_hosts"
 
 	echo "Cloning repository..."
 	git clone git@github.com:mcustiel/dotfiles.git /tmp/dotfiles
 	if [ "${MC_BRANCH}" != "" ]; then
+		cd /tmp/dotfiles
 		git checkout "${MC_BRANCH}"
+		cd -
 	fi
 	ls /tmp/dotfiles
 	echo "Repository cloned successfully"
