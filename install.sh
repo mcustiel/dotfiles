@@ -7,7 +7,7 @@ set -e
 function fail {
 	echo "Error: $1"
 	if [ -n "${2:-""}" ]; then
-		exit $2
+		exit "$2"
 	fi
 	exit 1
 }
@@ -21,6 +21,7 @@ if [ -d /tmp/dotfiles ] ; then
 fi
 
 [ -z ${MC_TESTING:-} ] && MC_TESTING="false"
+[ -s ${MC_BRANCH:-} ] && MC_BRANCH=""
 
 if [ "$MC_TESTING" = "false" ]; then
 	SSH_CFG="$HOME/.ssh"
@@ -31,6 +32,9 @@ if [ "$MC_TESTING" = "false" ]; then
 
 	echo "Cloning repository..."
 	git clone git@github.com:mcustiel/dotfiles.git /tmp/dotfiles
+	if [ "${MC_BRANCH}" != "" ]; then
+		git checkout "${MC_BRANCH}"
+	fi
 	ls /tmp/dotfiles
 	echo "Repository cloned successfully"
 else

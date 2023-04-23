@@ -8,8 +8,6 @@ fi
 
 $PREFIX apt-get install -y fd-find ripgrep curl wget
 
-# $PREFIX snap install --beta nvim --classic
-
 # Copy config directories
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 CONFIG_DIR="$HOME/.mcustiel"
