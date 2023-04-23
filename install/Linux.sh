@@ -8,10 +8,11 @@ fi
 
 $PREFIX apt-get install -y fd-find ripgrep curl wget
 
-$PREFIX snap install --beta nvim --classic
+# $PREFIX snap install --beta nvim --classic
 
 # Copy config directories
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
+CONFIG_DIR="$HOME/.mcustiel"
 
 source "$SCRIPT_DIR/../startup/msgfunctions"
 
@@ -30,5 +31,9 @@ infomsg "Starting installation in LINUX system"
 
 # Write config to .bashrc
 "$SCRIPT_DIR/_common/bashcfg.sh"
+
+#Install neovim
+curl -Lo "$CONFIG_DIR/global_scripts/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x "$CONFIG_DIR/global_scripts/nvim"
 
 successmsg "Installation in linux system successful"
