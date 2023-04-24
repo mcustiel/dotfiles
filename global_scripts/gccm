@@ -6,7 +6,7 @@ set -e
 set -o nounset
 
 fail () {
-	echo $1 > /dev/stderr
+	echo "$1" > /dev/stderr
 	exit 1
 }
 
@@ -24,7 +24,7 @@ SCOPE=""
 
 TYPE_OK=0
 TYPES_LIST=("fix" "feat" "chore" "build" "ci" "docs" "style" "refactor" "perf" "test")
-for type in ${TYPES_LIST[@]}; do
+for type in "${TYPES_LIST[@]}" ; do
 	if [ "$TYPE" = "$type" ]; then
 		TYPE_OK=1
 	fi
@@ -35,7 +35,7 @@ if [ "$TYPE_OK" = "0" ]; then
 fi
 
 if [[ -z ${3-} ]]; then
-	CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 	# First split by - char into an array
 	set -- "$CURRENT_BRANCH"

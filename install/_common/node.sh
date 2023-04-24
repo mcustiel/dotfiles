@@ -21,6 +21,8 @@ fi
 npm install -g yarn npx npm
 
 echo "$PATH" | grep -q 'yarn' || export PATH="$PATH:$HOME/.yarn/bin"
+PATH="$PATH:$(dirname "$(nvm which current)")"
+export PATH
 
 yarn global add typescript eslint neovim tsx gulp
 

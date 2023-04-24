@@ -12,4 +12,4 @@ yarn global add \
 	vscode-markdown-languageservice \
 	yaml-language-server
 
-yarn global updgrade
+yarn global upgrade

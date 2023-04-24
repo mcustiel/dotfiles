@@ -19,10 +19,10 @@ infomsg "Starting installation in LINUX system"
 "$SCRIPT_DIR/_common/copy.sh"
 
 # Install bash-it
-"$SCRIPT_DIR/_common/bashit.sh"
+source "$SCRIPT_DIR/_common/bashit.sh"
 
 # Install nvm, node, yarn, typescript, etc
-"$SCRIPT_DIR/_common/node.sh"
+source "$SCRIPT_DIR/_common/node.sh"
 
 # Install language servers for LSP
 "$SCRIPT_DIR/_common/lsp-lang-servers.sh"
@@ -33,5 +33,7 @@ infomsg "Starting installation in LINUX system"
 #Install neovim
 curl -Lo "$CONFIG_DIR/global_scripts/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x "$CONFIG_DIR/global_scripts/nvim"
+
+infomsg "Open a new bash session to let the new config to take place"
 
 successmsg "Installation in linux system successful"
