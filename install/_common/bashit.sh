@@ -32,6 +32,5 @@ bash-it enable plugin git
 bash-it enable plugin nvm
 
 sed -i '/BASH_IT_THEME/d' "$HOME/.bashrc"
-sed -i '/bash_it\.sh/d' "$HOME/.bashrc"
 
 successmsg "Done! ${MC_CHECK}"
