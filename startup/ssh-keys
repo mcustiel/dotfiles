@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# If ssh-agent is not running, start it
+
+LINES=$(ps aux | grep -c ssh-agent)
+if [ "2" -gt "$LINES" ] ; then
+    importantmsg "ssh-agent was not running. Starting it."
+    ssh-agent -s > "$HOME/.ssh-env-vars"
+fi
+if [ -e "$HOME/.ssh-env-vars" ]; then
+    importantmsg "ssh-agent was started manually. Setting env."
+    source "$HOME/.ssh-env-vars"
+fi
+
 # If ssh keys were not added yet, add all keys
 
 msg "Registering SSH keys..."
@@ -7,14 +19,14 @@ msg "Registering SSH keys..."
 PPKDIR=~/.ssh
 EXT=".pub"
 
-for key in $(ls $PPKDIR/*$EXT) ; do
+for key in $PPKDIR/*$EXT ; do
     # Add only private keys to ssh-agent
     PRIVATE_KEY=${key/$EXT/}
-    if ssh-add -l | grep -q $PRIVATE_KEY ; then
+    if ssh-add -l | grep -q "$PRIVATE_KEY" ; then
         infomsg "${PRIVATE_KEY} was already added, skipping."
     else
         infomsg "Adding ${PRIVATE_KEY} to ssh-agent."
-        ssh-add ${key/$EXT/}
+        ssh-add "${key/$EXT/}"
         infomsg "${PRIVATE_KEY} added."
     fi
 done
