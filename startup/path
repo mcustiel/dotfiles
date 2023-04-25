@@ -3,7 +3,7 @@
 msg "Setting up paths..."
 
 YARN_BIN_PATH=$HOME/.yarn/bin # $ yarn global bin
-GLOBAL_SCRIPTS_PATH=$HOME/.mcustiel/global-scripts/
+GLOBAL_SCRIPTS_PATH=$HOME/.mcustiel/global_scripts/
 
 export PATH=${GLOBAL_SCRIPTS_PATH}:${YARN_BIN_PATH}:${PATH}
 
