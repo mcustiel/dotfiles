@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-if [ "$MC_TESTING" = "true" ]; then
-	PREFIX=""
-else
-	PREFIX="sudo"
-fi
+if [ "$(command -v apt)" != "" ]; then
+	if [ "$MC_TESTING" = "true" ]; then
+		PREFIX=""
+	else
+		PREFIX="sudo"
+	fi
 
-$PREFIX apt-get install -y fd-find ripgrep curl wget
+	$PREFIX apt-get install -y fd-find ripgrep curl wget
+fi
 
 # Copy config directories
 SCRIPT_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
@@ -15,6 +17,8 @@ CONFIG_DIR="$HOME/.mcustiel"
 source "$SCRIPT_DIR/../startup/msgfunctions"
 
 infomsg "Starting installation in LINUX system"
+
+"$SCRIPT_DIR/_common/creates.sh"
 
 "$SCRIPT_DIR/_common/copy.sh"
 
@@ -34,6 +38,6 @@ source "$SCRIPT_DIR/_common/node.sh"
 curl -Lo "$CONFIG_DIR/global_scripts/nvim" https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x "$CONFIG_DIR/global_scripts/nvim"
 
-infomsg "Open a new bash session to let the new config to take place"
+importantmsg "Open a new bash session to let the new config to take place"
 
 successmsg "Installation in linux system successful"

@@ -3,7 +3,7 @@
 msg "Setting up general functions..."
 
 function cdws {
-    cd "$WORKSPACE_PATH/$1" || { echo "Directory not found"l; exit 1; }
+    cd "$MC_WORKSPACE_PATH/$1" || { echo "Directory not found"l; exit 1; }
 }
 
 function gpuob {
