@@ -40,8 +40,6 @@ vim.wo.wrap = false
 
 -- vc[[hi ColorColumn ctermbg=darkgrey guibg=darkgrey]]
 
--- local term_opts = { silent = true }
---
 -- Shorten function name
 -- local keymap = vim.api.nvim_set_keymap
 local keymap = vim.keymap.set
@@ -81,13 +79,14 @@ keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file auto
 -- Close buffers
 keymap("n", "<leader>xa", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
 keymap("n", "<leader>xe", ":%bd|e#<CR>", merge(opts, { desc = "Close all buffers except current one" }))
+keymap("n", "<leader>xb", ":bd<CR>", merge(opts, { desc = "Close current Buffer" }))
 
 -- Insert --
 -- Press jk fast to enter normal mode
 keymap("i", "jk", "<ESC>", merge(opts, { desc = "Exit insert mode and switch to normal mode" }))
 -- Move line up or down
-keymap("i", "<up>", "<ESC>:m .-2<CR>==gi", merge(opts, { desc = "Move line up" }))
-keymap("i", "<down>", "<ESC>:m .+1<CR>==gi", merge(opts, { desc = "Decrease window size vertically" }))
+-- keymap("i", "<up>", "<ESC>:m .-2<CR>==gi", merge(opts, { desc = "Move line up" }))
+-- keymap("i", "<down>", "<ESC>:m .+1<CR>==gi", merge(opts, { desc = "Decrease window size vertically" }))
 -- save file
 keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window size vertically" }))
 
@@ -103,6 +102,7 @@ vim.api.nvim_create_autocmd(
 		"*.c", "*.h",
 		"*.ts", "*.json", "*.js", "*.yaml",
 		"*.php", "*.java",
+		"*.go", "*.v",
 		"*.sh",
 		"Makefile",
 		"*.lua",
@@ -116,3 +116,5 @@ vim.api.nvim_create_autocmd(
 	  command = "normal zR",
 	}
 )
+vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
+

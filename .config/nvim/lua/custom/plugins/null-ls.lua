@@ -7,6 +7,7 @@ return {
                 null_ls.builtins.diagnostics.eslint,
                 null_ls.builtins.formatting.eslint,
                 null_ls.builtins.diagnostics.tsc,
+                null_ls.builtins.formatting.gofmt,
             },
         })
     end,

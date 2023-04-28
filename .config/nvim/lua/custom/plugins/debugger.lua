@@ -20,7 +20,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    --   'leoluz/nvim-dap-go',
+    'leoluz/nvim-dap-go',
     "mxsdev/nvim-dap-vscode-js",
 
     {
@@ -40,12 +40,6 @@ return {
       -- reasonable debug configurations
       automatic_setup = true,
 
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
-      },
       handlers = {
         function(config)
           -- all sources with no handler get passed here
@@ -54,6 +48,14 @@ return {
           require('mason-nvim-dap').default_setup(config)
         end,
       },
+
+      -- You'll need to check that you have the required things installed
+      -- online, please don't ask me how to install them :)
+      ensure_installed = {
+        -- Update this to ensure that you have the debuggers for the langs you want
+        'delve',
+      },
+
     }
 
     -- You can provide additional configuration to the handlers,
@@ -87,21 +89,27 @@ return {
           step_back = 'b',
           run_last = '▶▶',
           terminate = '⏹',
+          disconnect = "⏏",
         },
       },
     }
+    -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
+    vim.keymap.set("n", "<F7>", dapui.toggle)
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
-      --   require('dap-go').setup()
-        require("dap-vscode-js").setup({
+    require('dap-go').setup()
+
+    require("dap-vscode-js").setup({
       -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
       -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
       -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+
       adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+
       -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
       -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
       -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
