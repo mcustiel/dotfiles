@@ -25,8 +25,12 @@ return {
 
     {
       "microsoft/vscode-js-debug",
+      config = function ()
+      end,
+      -- ft = {"typescript", "javascript"},
       -- opt = true,
-      command = "npm install --legacy-peer-deps && npm run compile",
+      -- build = "npm install --legacy-peer-deps && npm run compile",
+      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
     }
 
   },
@@ -53,7 +57,7 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        -- 'delve',
       },
 
     }
@@ -105,36 +109,50 @@ return {
 
     require("dap-vscode-js").setup({
       -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-      -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
+      debugger_path = vim.fn.stdpath('data') .. "/lazy/vscode-js-debug", -- Path to vscode-js-debug installation.
       -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-
-      adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+      adapters = { 'pwa-node', 'pwa-chrome', 'node-terminal'}, -- which adapters to register in nvim-dap
 
       -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
       -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
       -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
     })
 
+    -- dap.configurations.go = {
+    --   {
+    --     type = "go",
+    --     name = "Debug",
+    --     request = "launch",
+    --     program = "${file}",
+    --   }
+    -- }
+
     for _, language in ipairs({ "typescript", "javascript" }) do
-      require("dap").configurations[language] = {
+      dap.configurations[language] = {
         {
+          name = "Launch file",
           type = "pwa-node",
           request = "launch",
-          name = "Launch file",
           program = "${file}",
+          rootPath = '${workspaceFolder}',
           cwd = "${workspaceFolder}",
+          sourceMaps = true,
+          skipFiles = { '<node_internals>/**' },
+          protocol = 'inspector',
+          console = 'integratedTerminal',
         },
         {
+          name = "Attach to node process",
           type = "pwa-node",
           request = "attach",
-          name = "Attach",
           processId = require("dap.utils").pick_process,
+          rootPath = '${workspaceFolder}',
           cwd = "${workspaceFolder}",
         },
         {
+          name = "Debug Jest Tests",
           type = "pwa-node",
           request = "launch",
-          name = "Debug Jest Tests",
           -- trace = true, -- include debugger info
           runtimeExecutable = "node",
           runtimeArgs = {
@@ -145,6 +163,19 @@ return {
           cwd = "${workspaceFolder}",
           console = "integratedTerminal",
           internalConsoleOptions = "neverOpen",
+        },
+        {
+          name = "TS Node Launch",
+          type = "node",
+          request = "launch",
+          runtimeExecutable = "node",
+          runtimeArgs = {"--nolazy", "-r", "ts-node/register/transpile-only"},
+
+          args = {"src/script.ts", "--example", "hello"},
+
+          cwd = "${workspaceRoot}",
+          internalConsoleOptions = "openOnSessionStart",
+          skipFiles = {"<node_internals>/**", "node_modules/**"},
         }
       }
     end

@@ -6,11 +6,11 @@ local vo = vim.opt
 local function merge(dest, origin)
 	local merged = {}
 
-	for k,v in pairs(dest) do
+	for k, v in pairs(dest) do
 		merged[k] = v
 	end
 
-	for k,v in pairs(origin) do
+	for k, v in pairs(origin) do
 		merged[k] = v
 	end
 
@@ -20,13 +20,13 @@ end
 vo.fileencoding = 'utf-8'
 vo.conceallevel = 0
 vo.hlsearch = true
-vo.cursorline = true                       -- highlight the current line
-vo.number = true                           -- set numbered lines
-vo.relativenumber = true                   -- set relative numbered lines
+vo.cursorline = true         -- highlight the current line
+vo.number = true             -- set numbered lines
+vo.relativenumber = true     -- set relative numbered lines
 
-vo.guifont = "monospace:h17"               -- the font used in graphical neovim applications
+vo.guifont = "monospace:h17" -- the font used in graphical neovim applications
 
-vo.smartcase = true                        -- smart case
+vo.smartcase = true          -- smart case
 
 vo.softtabstop = 2
 vo.tabstop = 2
@@ -48,7 +48,8 @@ local keymap = vim.keymap.set
 keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvim Tree" }))
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
 keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show current file in Nvim Tree" }))
-keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>", merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
+keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>",
+	merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
 
 -- Search
 keymap('n', '<leader>sc', require('telescope.builtin').resume, { desc = '[S]earch [C]ontinue' })
@@ -76,6 +77,9 @@ keymap("n", "<down>", ":m .+1<CR>", merge(opts, { desc = "Move line down" }))
 -- Toggle autosave
 keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
 
+-- Format code
+keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
+
 -- Close buffers
 keymap("n", "<leader>xa", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
 keymap("n", "<leader>xe", ":%bd|e#<CR>", merge(opts, { desc = "Close all buffers except current one" }))
@@ -97,24 +101,23 @@ keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
 vim.api.nvim_create_autocmd(
 	"BufWritePre", {
-	-- FileType c,cpp,java,php,sh autocmd BufWritePre <buffer>
-	pattern = {
-		"*.c", "*.h",
-		"*.ts", "*.json", "*.js", "*.yaml",
-		"*.php", "*.java",
-		"*.go", "*.v",
-		"*.sh",
-		"Makefile",
-		"*.lua",
-	},
-	command = '%s/\\s\\+$//e'
-})
+		-- FileType c,cpp,java,php,sh autocmd BufWritePre <buffer>
+		pattern = {
+			"*.c", "*.h",
+			"*.ts", "*.json", "*.js", "*.yaml",
+			"*.php", "*.java",
+			"*.go", "*.v",
+			"*.sh",
+			"Makefile",
+			"*.lua",
+		},
+		command = '%s/\\s\\+$//e'
+	})
 
 vim.api.nvim_create_autocmd(
 	"BufReadPost,FileReadPost", {
-		pattern = {"*"},
-	  command = "normal zR",
+		pattern = { "*" },
+		command = "normal zR",
 	}
 )
 vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
-
