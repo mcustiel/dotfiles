@@ -108,6 +108,9 @@ return {
       -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
       -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
 
+      debugger_path = os.getenv("MC_JS_DEBUG") or os.getenv("HOME") .. '/vscode-js-debug',
+
+
       adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
 
       -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
