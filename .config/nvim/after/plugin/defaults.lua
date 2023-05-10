@@ -19,7 +19,7 @@ end
 
 vo.fileencoding = 'utf-8'
 vo.conceallevel = 0
-vo.hlsearch = true
+-- vo.hlsearch = true
 vo.cursorline = true         -- highlight the current line
 vo.number = true             -- set numbered lines
 vo.relativenumber = true     -- set relative numbered lines

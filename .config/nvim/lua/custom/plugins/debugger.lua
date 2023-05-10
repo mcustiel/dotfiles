@@ -25,7 +25,7 @@ return {
 
     {
       "microsoft/vscode-js-debug",
-      config = function ()
+      config = function()
       end,
       -- ft = {"typescript", "javascript"},
       -- opt = true,
@@ -67,11 +67,12 @@ return {
     -- require('mason-nvim-dap').setup_handlers()
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Continue"})
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step into"})
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step over"})
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step out"})
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = "[DEBUG] Toggle breakpoint"})
+    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Continue" })
+    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step into" })
+    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step over" })
+    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step out" })
+    vim.keymap.set('n', '<F4>', dap.close, { desc = "[DEBUG] Stop" })
+    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = "[DEBUG] Toggle breakpoint" })
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end)
@@ -104,14 +105,17 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
+    vim.fn.sign_define('DapBreakpoint',{ text ='🔴', texthl ='', linehl ='', numhl =''})
+    vim.fn.sign_define('DapStopped',{ text ='▶️', texthl ='', linehl ='', numhl =''})
+
     -- Install golang specific config
     require('dap-go').setup()
 
     require("dap-vscode-js").setup({
       -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
       debugger_path = vim.fn.stdpath('data') .. "/lazy/vscode-js-debug", -- Path to vscode-js-debug installation.
-      -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-      adapters = { 'pwa-node', 'pwa-chrome', 'node-terminal'}, -- which adapters to register in nvim-dap
+      -- debugger_cmd = { "js-debug-adapter" },                             -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+      adapters = { 'pwa-node', 'pwa-chrome', 'node-terminal' },          -- which adapters to register in nvim-dap
 
       -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
       -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
@@ -134,20 +138,25 @@ return {
           type = "pwa-node",
           request = "launch",
           program = "${file}",
-          rootPath = '${workspaceFolder}',
           cwd = "${workspaceFolder}",
           sourceMaps = true,
-          skipFiles = { '<node_internals>/**' },
-          protocol = 'inspector',
-          console = 'integratedTerminal',
+          -- skipFiles = { '<node_internals>/**' },
+          -- protocol = 'inspector',
+          -- rootPath = '${workspaceFolder}',
+          -- sourceMaps = true,
+          -- skipFiles = { '<node_internals>/**' },
+          -- protocol = 'inspector',
+          -- console = 'integratedTerminal',
+          preLaunchTask = "tsc",
+          -- outFiles = {"${workspaceFolder}/build/**/*.js"}
         },
         {
           name = "Attach to node process",
           type = "pwa-node",
           request = "attach",
           processId = require("dap.utils").pick_process,
-          rootPath = '${workspaceFolder}',
           cwd = "${workspaceFolder}",
+          rootPath = '${workspaceFolder}',
         },
         {
           name = "Debug Jest Tests",
@@ -166,17 +175,19 @@ return {
         },
         {
           name = "TS Node Launch",
-          type = "node",
+          type = "pwa-node",
           request = "launch",
+          sourceMaps = true,
+          cwd = "${workspaceFolder}",
+          -- runtimeExecutable = "node",
           runtimeExecutable = "node",
-          runtimeArgs = {"--nolazy", "-r", "ts-node/register/transpile-only"},
+          runtimeArgs = { "--nolazy", "-r", "ts-node/register" },
 
-          args = {"src/script.ts", "--example", "hello"},
+          args = { "--inspect", "${file}" },
 
-          cwd = "${workspaceRoot}",
-          internalConsoleOptions = "openOnSessionStart",
-          skipFiles = {"<node_internals>/**", "node_modules/**"},
-        }
+          -- internalConsoleOptions = "openOnSessionStart",
+          skipFiles = { "<node_internals>/**", "node_modules/**" },
+        },
       }
     end
   end,
