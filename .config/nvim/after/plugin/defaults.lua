@@ -85,6 +85,9 @@ keymap("n", "<leader>xa", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }
 keymap("n", "<leader>xe", ":%bd|e#<CR>", merge(opts, { desc = "Close all buffers except current one" }))
 keymap("n", "<leader>xb", ":bd<CR>", merge(opts, { desc = "Close current Buffer" }))
 
+-- Wordwrap
+keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "[W]ord [W]rap" }))
+
 -- Insert --
 -- Press jk fast to enter normal mode
 keymap("i", "jk", "<ESC>", merge(opts, { desc = "Exit insert mode and switch to normal mode" }))
@@ -96,8 +99,8 @@ keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window si
 
 -- Visual --
 -- Move line up or down
-keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", merge(opts, { desc = "Decrease window size vertically" }))
-keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
+-- keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", merge(opts, { desc = "Decrease window size vertically" }))
+-- keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
 vim.api.nvim_create_autocmd(
 	"BufWritePre", {
