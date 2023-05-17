@@ -5,22 +5,93 @@
 set -e
 set -o nounset
 
+ANSI_OPEN="\033["
+STRONG="${ANSI_OPEN}1m"
+INFO="${ANSI_OPEN}94m"
+NOFMT="${ANSI_OPEN}0m"
+
 fail () {
-	echo "$1" > /dev/stderr
+	echo -e "$1" > /dev/stderr
 	exit 1
 }
 
-if [ "$1" = "-h" ]; then
+print_usage () {
+	echo -e "${STRONG}USAGE${NOFMT}"
+	echo "    gcmm <conventional commit prefix> <commit message> [(--scope | -p) <scope> | --no-scope | -n] [optional git commit args]"
 	echo
-	echo "Usage: gcmm [conventional commit prefix] [commit message] [scope (optional)]"
-	echo "Example: gcmm chore 'My commit message'"
+}
+
+print_help () {
 	echo
+	echo "Creates a conventional commit and takes the first two parts from splitting the current branch name by '-' to create the scope."
+	echo
+
+	print_usage
+
+	echo -e "${STRONG}EXAMPLES${NOFMT}"
+	echo -e "- ${INFO}in branch "my-test-branch-1"${NOFMT}: ${STRONG}gcmm chore 'My commit message'${NOFMT} generates: ${STRONG}git commit -m 'chore(my-test): my commit message'${NOFMT}"
+	echo -e "- ${INFO}with scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --scope potato${NOFMT} generates: ${STRONG}git commit -m 'chore(potato): my commit message'${NOFMT}"
+	echo -e "- ${INFO}without scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --no-scope${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message'${NOFMT}"
+	echo -e "- ${INFO}with git commit args${NOFMT}: ${STRONG}gcmm chore 'My commit message' --amend${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message' --amend${NOFMT}"
+	echo
+
+	echo -e "To force the branch scope format set the ENV_VAR ${INFO}GCCM_SCOPE_PATTERN${NOFMT} with a regex (case insensitive). e.g.: ${STRONG}export GCCM_SCOPE_PATTERN=\"^WSSSH-[0-9]+$\"${NOFMT}"
+	echo
+
 	exit 0
+}
+
+if [ -z "${GCCM_SCOPE_PATTERN-}" ]; then
+	GCCM_SCOPE_PATTERN="^[0-9a-z]+\-[0-9a-z]+$"
 fi
 
-TYPE=$1
-MESSAGE=$2
+((POS=0))
+SCOPECHK=0
+NO_SCOPE=0
+GIT_ARGS=""
 SCOPE=""
+TYPE=""
+MESSAGE=""
+for argument in "$@"; do
+	if [ "$argument" = "-h" ] || [ "$argument" = "--help" ]; then
+		print_help
+	fi
+	case ${POS} in
+		0)
+			TYPE=$argument
+			;;
+		1)
+			MESSAGE=$argument
+			;;
+		*)
+			case ${argument} in
+				--no-scope|-n)
+					NO_SCOPE=1
+					;;
+				--scope|s)
+					SCOPECHK=1
+					;;
+				*)
+				if [ "$SCOPECHK" = "1" ]; then
+					SCOPE=$argument
+					SCOPECHK=0
+				else
+					GIT_ARGS="$GIT_ARGS $argument"
+				fi
+				;;
+			esac
+			;;
+	esac
+	((POS=POS+1))
+done
+
+if [ "$NO_SCOPE" = "1" ] ; then
+	SCOPE=""
+fi
+
+if [ "$MESSAGE" = "" ]; then
+	fail "Received an empty message\n$(print_usage)"
+fi
 
 TYPE_OK=0
 TYPES_LIST=("fix" "feat" "chore" "build" "ci" "docs" "style" "refactor" "perf" "test")
@@ -31,25 +102,43 @@ for type in "${TYPES_LIST[@]}" ; do
 done
 
 if [ "$TYPE_OK" = "0" ]; then
-	fail "Error: Invalid type $TYPE, expected one of (${TYPES_LIST[*]})"
+	fail "${STRONG}Error:${NOFMT} Invalid type '$TYPE', expected one of ${INFO}(${TYPES_LIST[*]})${NOFMT}"
 fi
 
-if [[ -z ${3-} ]]; then
+if [[ -z ${SCOPE-} ]]; then
+	# There's no scope provided, try to get it from the branch name
 	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 	# First split by - char into an array
 	set -- "$CURRENT_BRANCH"
+	OLDIFS=$IFS
 	IFS="-"; declare -a ARRAY=($*)
-	# echo "${ARRAY[*]}"
-	if [[ ! -z "${ARRAY[0]+defined}" ]] && [[ ! -z "${ARRAY[1]+defined}" ]] ; then
-        	SCOPE="(${ARRAY[0]}-${ARRAY[1]})"
+
+	if [[ -n "${ARRAY[0]+defined}" ]] && [[ -n "${ARRAY[1]+defined}" ]] ; then
+		# Build the scope from the two first parts of the branch name
+		SCOPE="${ARRAY[0]}-${ARRAY[1]}"
+		# Make the regex check case insensitive
+		shopt -s nocasematch
+		if [[ $SCOPE =~ $GCCM_SCOPE_PATTERN ]] ; then
+			SCOPE="($SCOPE)"
+		else
+			echo "Scope '$SCOPE' gotten from the branch does not match the pattern '$GCCM_SCOPE_PATTERN'. Setting it to empty." > /dev/stderr
+			SCOPE=""
+		fi
 	fi
+
+	IFS=$OLDIFS
 else
-	SCOPE="($3)"
+	SCOPE="($SCOPE)"
 fi
 
-COMMIT_MESSAGE=$(echo "$TYPE$SCOPE: $MESSAGE" | awk '{print tolower($0)}')
+# Build the commit message by prefixing the type the scope, the message 
+# without trailing punctuation and making everything lowercase
+COMMIT_MESSAGE=$(echo "$TYPE$SCOPE: ${MESSAGE/%./}" | awk '{print tolower($0)}')
+# Remove heading spaces from git arguments, purely aesthetic
+GIT_ARGS=${GIT_ARGS/# /}
 
 # Prepend the ticket name into the message
-echo "git commit -m $COMMIT_MESSAGE"
-git commit -m "$COMMIT_MESSAGE"
+echo -e "${STRONG}Executing:${NOFMT} git commit -m $COMMIT_MESSAGE $GIT_ARGS"
+echo
+git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
