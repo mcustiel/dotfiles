@@ -139,6 +139,6 @@ COMMIT_MESSAGE=$(echo "$TYPE$SCOPE: ${MESSAGE/%./}" | awk '{print tolower($0)}')
 GIT_ARGS=${GIT_ARGS/# /}
 
 # Prepend the ticket name into the message
-echo -e "${STRONG}Executing:${NOFMT} git commit -m $COMMIT_MESSAGE $GIT_ARGS"
+echo -e "${STRONG}Executing:${NOFMT} git commit -m '$COMMIT_MESSAGE' $GIT_ARGS"
 echo
 git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
