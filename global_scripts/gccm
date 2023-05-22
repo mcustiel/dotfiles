@@ -17,7 +17,7 @@ fail () {
 
 print_usage () {
 	echo -e "${STRONG}USAGE${NOFMT}"
-	echo "    gcmm <conventional commit prefix> <commit message> [(--scope | -p) <scope> | --no-scope | -n] [optional git commit args]"
+	echo "    gcmm <conventional commit prefix> <commit message> [(--scope | -p) <scope> | (--no-scope | -n)] [--breaking | -b] [optional git commit args]"
 	echo
 }
 
@@ -32,6 +32,7 @@ print_help () {
 	echo -e "- ${INFO}in branch "my-test-branch-1"${NOFMT}: ${STRONG}gcmm chore 'My commit message'${NOFMT} generates: ${STRONG}git commit -m 'chore(my-test): my commit message'${NOFMT}"
 	echo -e "- ${INFO}with scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --scope potato${NOFMT} generates: ${STRONG}git commit -m 'chore(potato): my commit message'${NOFMT}"
 	echo -e "- ${INFO}without scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --no-scope${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message'${NOFMT}"
+	echo -e "- ${INFO}with breaking change${NOFMT}: ${STRONG}gcmm chore 'My commit message' --breaking${NOFMT} generates: ${STRONG}git commit -m 'chore!: my commit message'${NOFMT}"
 	echo -e "- ${INFO}with git commit args${NOFMT}: ${STRONG}gcmm chore 'My commit message' --amend${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message' --amend${NOFMT}"
 	echo
 
@@ -48,6 +49,7 @@ fi
 ((POS=0))
 SCOPECHK=0
 NO_SCOPE=0
+BREAKING_CHANGE=""
 GIT_ARGS=""
 SCOPE=""
 TYPE=""
@@ -65,10 +67,13 @@ for argument in "$@"; do
 			;;
 		*)
 			case ${argument} in
+				--breaking|-b)
+					BREAKING_CHANGE="!"
+					;;
 				--no-scope|-n)
 					NO_SCOPE=1
 					;;
-				--scope|s)
+				--scope|-p)
 					SCOPECHK=1
 					;;
 				*)
@@ -134,7 +139,7 @@ fi
 
 # Build the commit message by prefixing the type the scope, the message 
 # without trailing punctuation and making everything lowercase
-COMMIT_MESSAGE=$(echo "$TYPE$SCOPE: ${MESSAGE/%./}" | awk '{print tolower($0)}')
+COMMIT_MESSAGE=$(echo "${TYPE}${SCOPE}${BREAKING_CHANGE}: ${MESSAGE/%./}" | awk '{print tolower($0)}')
 # Remove heading spaces from git arguments, purely aesthetic
 GIT_ARGS=${GIT_ARGS/# /}
 
