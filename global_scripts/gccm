@@ -23,20 +23,20 @@ print_usage () {
 
 print_help () {
 	echo
-	echo "Creates a conventional commit and takes the first two parts from splitting the current branch name by '-' to create the scope."
+	echo "Creates a conventional commit and generates the scope from the branch name using a regex, by default $GCCM_SCOPE_PATTERN."
 	echo
 
 	print_usage
 
 	echo -e "${STRONG}EXAMPLES${NOFMT}"
-	echo -e "- ${INFO}in branch "my-test-branch-1"${NOFMT}: ${STRONG}gcmm chore 'My commit message'${NOFMT} generates: ${STRONG}git commit -m 'chore(my-test): my commit message'${NOFMT}"
+	echo -e "- ${INFO}in branch 'my-test-branch-1'${NOFMT}: ${STRONG}gcmm chore 'My commit message'${NOFMT} generates: ${STRONG}git commit -m 'chore(my-test): my commit message'${NOFMT}"
 	echo -e "- ${INFO}with scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --scope potato${NOFMT} generates: ${STRONG}git commit -m 'chore(potato): my commit message'${NOFMT}"
 	echo -e "- ${INFO}without scope${NOFMT}: ${STRONG}gcmm chore 'My commit message' --no-scope${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message'${NOFMT}"
 	echo -e "- ${INFO}with breaking change${NOFMT}: ${STRONG}gcmm chore 'My commit message' --breaking${NOFMT} generates: ${STRONG}git commit -m 'chore!: my commit message'${NOFMT}"
 	echo -e "- ${INFO}with git commit args${NOFMT}: ${STRONG}gcmm chore 'My commit message' --amend${NOFMT} generates: ${STRONG}git commit -m 'chore: my commit message' --amend${NOFMT}"
 	echo
 
-	echo -e "To force the branch scope format set the ENV_VAR ${INFO}GCCM_SCOPE_PATTERN${NOFMT} with a regex (case insensitive). e.g.: ${STRONG}export GCCM_SCOPE_PATTERN=\"^WSSSH-[0-9]+$\"${NOFMT}"
+	echo -e "To force the branch scope format set the ENV_VAR ${INFO}GCCM_SCOPE_PATTERN${NOFMT} with a case sensitive regex. e.g.: ${STRONG}export GCCM_SCOPE_PATTERN=\"^WSSSH-[0-9]+\"${NOFMT}"
 	echo
 
 	exit 0
@@ -114,12 +114,10 @@ if [[ -z ${SCOPE-} ]]; then
 	# There's no scope provided, try to get it from the branch name
 	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 	set +e
-	SCOPE=$(echo "$CURRENT_BRANCH" | grep -Eo "$GCCM_SCOPE_PATTERN" && echo $!)
+	SCOPE=$(echo "$CURRENT_BRANCH" | grep -Eo "$GCCM_SCOPE_PATTERN" || true)
 	set -e
 	if [[ -n ${SCOPE-} ]] ; then
 		SCOPE="($SCOPE)"
-	else
-		echo "Scope '$SCOPE' gotten from the branch does not match the pattern '$GCCM_SCOPE_PATTERN'. Setting it to empty." > /dev/stderr
 	fi
 else
 	SCOPE="($SCOPE)"
@@ -134,4 +132,4 @@ GIT_ARGS=${GIT_ARGS/# /}
 # Prepend the ticket name into the message
 echo -e "${STRONG}Executing:${NOFMT} git commit -m '$COMMIT_MESSAGE' $GIT_ARGS"
 echo
-# git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
+git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
