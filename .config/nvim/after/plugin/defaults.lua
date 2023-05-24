@@ -103,8 +103,7 @@ keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window si
 -- keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
 vim.api.nvim_create_autocmd(
-	"BufWritePre", {
-		-- FileType c,cpp,java,php,sh autocmd BufWritePre <buffer>
+	"BufLeave", {
 		pattern = {
 			"*.c", "*.h",
 			"*.ts", "*.json", "*.js", "*.yaml",
