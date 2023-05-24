@@ -30,8 +30,8 @@ return {
       -- ft = {"typescript", "javascript"},
       -- opt = true,
       -- build = "npm install --legacy-peer-deps && npm run compile",
-      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-    }
+      build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+    },
 
   },
 
@@ -100,8 +100,8 @@ return {
       },
     }
 
-    vim.fn.sign_define('DapBreakpoint',{ text ='🔴', texthl ='', linehl ='', numhl =''})
-    vim.fn.sign_define('DapStopped',{ text ='▶️', texthl ='', linehl ='', numhl =''})
+    vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })
+    vim.fn.sign_define('DapStopped', { text = '▶️', texthl = '', linehl = '', numhl = '' })
 
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
     vim.keymap.set("n", "<F7>", dapui.toggle)

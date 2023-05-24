@@ -43,10 +43,10 @@ print_help () {
 }
 
 if [ -z "${GCCM_SCOPE_PATTERN-}" ]; then
-	GCCM_SCOPE_PATTERN="^[0-9a-z]+\-[0-9a-z]+$"
+	GCCM_SCOPE_PATTERN="^[0-9a-z]+\-[0-9a-z]+"
 fi
 
-((POS=0))
+POS=0
 SCOPECHK=0
 NO_SCOPE=0
 BREAKING_CHANGE=""
@@ -113,26 +113,14 @@ fi
 if [[ -z ${SCOPE-} ]]; then
 	# There's no scope provided, try to get it from the branch name
 	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-	# First split by - char into an array
-	set -- "$CURRENT_BRANCH"
-	OLDIFS=$IFS
-	IFS="-"; declare -a ARRAY=($*)
-
-	if [[ -n "${ARRAY[0]+defined}" ]] && [[ -n "${ARRAY[1]+defined}" ]] ; then
-		# Build the scope from the two first parts of the branch name
-		SCOPE="${ARRAY[0]}-${ARRAY[1]}"
-		# Make the regex check case insensitive
-		shopt -s nocasematch
-		if [[ $SCOPE =~ $GCCM_SCOPE_PATTERN ]] ; then
-			SCOPE="($SCOPE)"
-		else
-			echo "Scope '$SCOPE' gotten from the branch does not match the pattern '$GCCM_SCOPE_PATTERN'. Setting it to empty." > /dev/stderr
-			SCOPE=""
-		fi
+	set +e
+	SCOPE=$(echo "$CURRENT_BRANCH" | grep -Eo "$GCCM_SCOPE_PATTERN" && echo $!)
+	set -e
+	if [[ -n ${SCOPE-} ]] ; then
+		SCOPE="($SCOPE)"
+	else
+		echo "Scope '$SCOPE' gotten from the branch does not match the pattern '$GCCM_SCOPE_PATTERN'. Setting it to empty." > /dev/stderr
 	fi
-
-	IFS=$OLDIFS
 else
 	SCOPE="($SCOPE)"
 fi
@@ -146,4 +134,4 @@ GIT_ARGS=${GIT_ARGS/# /}
 # Prepend the ticket name into the message
 echo -e "${STRONG}Executing:${NOFMT} git commit -m '$COMMIT_MESSAGE' $GIT_ARGS"
 echo
-git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
+# git commit -m "$COMMIT_MESSAGE" $GIT_ARGS
