@@ -19,7 +19,8 @@ end
 
 vo.fileencoding = 'utf-8'
 vo.conceallevel = 0
--- vo.hlsearch = true
+vo.hlsearch = true
+vim.o.hlsearch = true
 vo.cursorline = true         -- highlight the current line
 vo.number = true             -- set numbered lines
 vo.relativenumber = true     -- set relative numbered lines
@@ -37,6 +38,7 @@ vo.foldexpr = "nvim_treesitter#foldexpr()"
 
 vo.colorcolumn = "80,100,120"
 vim.wo.wrap = false
+vo.incsearch = true
 
 -- vc[[hi ColorColumn ctermbg=darkgrey guibg=darkgrey]]
 
