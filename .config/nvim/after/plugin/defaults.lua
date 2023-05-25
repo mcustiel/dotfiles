@@ -46,6 +46,20 @@ vo.incsearch = true
 -- local keymap = vim.api.nvim_set_keymap
 local keymap = vim.keymap.set
 
+local toggle_hl_search = function()
+	local hlsearch = vim.api.nvim_get_vvar('hlsearch')
+	if (hlsearch == 1) then
+		-- vim.api.nvim_set_vvar('hlsearch', 0)
+		vim.cmd([[ :set nohlsearch ]])
+	else
+		-- vim.api.nvim_set_vvar('hlsearch', 1)
+		vim.cmd([[ :set hlsearch ]])
+	end
+end
+
+-- Toggle hlsearch
+keymap("n", "<leader>sl", toggle_hl_search, merge(opts, { desc = "Toggle hlsearch" }))
+
 -- Display file tree sidebar
 keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvim Tree" }))
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
@@ -92,8 +106,10 @@ keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "
 
 -- Trouble
 keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
-keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" }))
-keymap("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" }))
+keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+	merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" }))
+keymap("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
+	merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" }))
 keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", merge(opts, { desc = "Trouble: Display [l]oclist" }))
 keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", merge(opts, { desc = "Trouble: Display [q]uickfix" }))
 keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", merge(opts, { desc = "Trouble-LSP: [g]oto [r]eferences" }))
