@@ -83,12 +83,21 @@ keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file auto
 keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
 
 -- Close buffers
-keymap("n", "<leader>xa", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
-keymap("n", "<leader>xe", ":%bd|e#<CR>", merge(opts, { desc = "Close all buffers except current one" }))
-keymap("n", "<leader>xb", ":bd<CR>", merge(opts, { desc = "Close current Buffer" }))
+keymap("n", "<leader>cx", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
+keymap("n", "<leader>ce", ":%bd|e#<CR>", merge(opts, { desc = "[C]lose all buffers [e]xcept current one" }))
+keymap("n", "<leader>cb", ":bd<CR>", merge(opts, { desc = "[C]lose current [B]uffer" }))
 
 -- Wordwrap
 keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "[W]ord [W]rap" }))
+
+-- Trouble
+keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
+keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" }))
+keymap("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" }))
+keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", merge(opts, { desc = "Trouble: Display [l]oclist" }))
+keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", merge(opts, { desc = "Trouble: Display [q]uickfix" }))
+keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", merge(opts, { desc = "Trouble-LSP: [g]oto [r]eferences" }))
+
 
 -- Insert --
 -- Press jk fast to enter normal mode
