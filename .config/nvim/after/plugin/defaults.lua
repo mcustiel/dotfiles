@@ -150,3 +150,4 @@ vim.api.nvim_create_autocmd(
 	}
 )
 vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
+vim.cmd([[ autocmd FileType php set iskeyword+=$ ]])
