@@ -44,6 +44,8 @@ return {
       -- reasonable debug configurations
       automatic_setup = true,
 
+      -- You can provide additional configuration to the handlers,
+      -- see mason-nvim-dap README for more information
       handlers = {
         -- function(config)
         -- all sources with no handler get passed here
@@ -60,23 +62,18 @@ return {
         -- 'delve',
         -- 'js-debug-adapter',
       },
-
     }
 
-    -- You can provide additional configuration to the handlers,
-    -- see mason-nvim-dap README for more information
-    -- require('mason-nvim-dap').setup_handlers()
-
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Continue" })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step into" })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step over" })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step out" })
+    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Start/Continue" })
+    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step Into" })
+    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step Over" })
+    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step Out" })
     vim.keymap.set('n', '<F4>', dap.close, { desc = "[DEBUG] Stop" })
     vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = "[DEBUG] Toggle breakpoint" })
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end)
+    end, { desc = 'Debug: Set Breakpoint' })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -95,7 +92,7 @@ return {
           step_back = 'b',
           run_last = '▶▶',
           terminate = '⏹',
-          disconnect = "⏏",
+          disconnect = '⏏',
         },
       },
     }
@@ -103,8 +100,8 @@ return {
     vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })
     vim.fn.sign_define('DapStopped', { text = '▶️', texthl = '', linehl = '', numhl = '' })
 
-    -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
-    vim.keymap.set("n", "<F7>", dapui.toggle)
+    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
+    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
