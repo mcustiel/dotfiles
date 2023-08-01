@@ -20,7 +20,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    -- 'leoluz/nvim-dap-go',
+    'leoluz/nvim-dap-go',
     "mxsdev/nvim-dap-vscode-js",
 
     {
@@ -30,7 +30,7 @@ return {
       -- ft = {"typescript", "javascript"},
       -- opt = true,
       -- build = "npm install --legacy-peer-deps && npm run compile",
-      build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git checkout -- package*.json",
     },
 
   },

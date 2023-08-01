@@ -139,6 +139,7 @@ vim.api.nvim_create_autocmd(
 			"*.sh",
 			"Makefile",
 			"*.lua",
+			"*.conf",
 		},
 		command = '%s/\\s\\+$//e'
 	})
