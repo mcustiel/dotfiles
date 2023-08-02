@@ -1,5 +1,6 @@
 return {
     "NLKNguyen/papercolor-theme",
+
     config = function()
         local colorscheme = "PaperColor"
 
