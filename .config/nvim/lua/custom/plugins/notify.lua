@@ -4,7 +4,10 @@ return {
 	config = function ()
 		local notify = require("notify")
 
-		notify.setup()
+		notify.setup({
+			render = "compact",
+			timeout = 3000,
+		})
 		vim.notify = notify
 	end,
 }
