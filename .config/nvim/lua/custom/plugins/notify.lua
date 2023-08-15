@@ -1,3 +1,6 @@
+-- ------------------------------------------------------------------------------
+-- Displays nice notify popups
+-- ------------------------------------------------------------------------------
 return {
 	'rcarriga/nvim-notify',
 
@@ -8,6 +11,8 @@ return {
 			render = "compact",
 			timeout = 3000,
 		})
-		vim.notify = notify
+		vim.notify = function(message, level, opts)
+			return notify(message, level, opts)
+		end
 	end,
 }

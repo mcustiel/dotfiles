@@ -17,7 +17,7 @@ local function merge(dest, origin)
 	return merged
 end
 
-vo.fileencoding = 'utf-8'
+vo.fileencoding = 'UTF-8'
 vo.conceallevel = 0
 vo.hlsearch = true
 vim.o.hlsearch = true
@@ -94,7 +94,10 @@ keymap("n", "<down>", ":m .+1<CR>", merge(opts, { desc = "Move line down" }))
 keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
 
 -- Format code
-keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
+--keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
+keymap("n", "<Leader>cf", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, {desc = "[lsp] format" })
 
 -- Close buffers
 keymap("n", "<leader>cx", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))

@@ -1,3 +1,6 @@
+-- ------------------------------------------------------------------------------
+-- Displays bottom info line
+-- ------------------------------------------------------------------------------
 local function parentFolder()
   local cwd = vim.fn.getcwd()
   local currentPart = ""
