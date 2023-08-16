@@ -450,6 +450,8 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
 
+  eslint = {},
+
   tsserver = {},
 
   html = { filetypes = { 'html', 'twig', 'hbs'}, capabilities = snippet_support },
