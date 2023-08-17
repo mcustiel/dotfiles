@@ -476,6 +476,8 @@ local servers = {
   phpactor = {},
 
   vls = {},
+
+  zls = {},
 }
 
 -- Setup neovim lua configuration
