@@ -33,8 +33,12 @@ vo.softtabstop = 2
 vo.tabstop = 2
 vo.shiftwidth = 2
 
-vo.foldmethod = "expr"
-vo.foldexpr = "nvim_treesitter#foldexpr()"
+-- vo.foldmethod = "expr"
+-- vo.foldexpr = "nvim_treesitter#foldexpr()"
+vo.foldcolumn = '1' -- '0' is not bad
+vo.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vo.foldlevelstart = 99
+vo.foldenable = true
 
 vo.colorcolumn = "80,100,120"
 vim.wo.wrap = false
@@ -96,8 +100,12 @@ keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file auto
 -- Format code
 --keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
 keymap("n", "<Leader>cf", function()
-        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-      end, {desc = "[lsp] format" })
+	vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+end, { desc = "[lsp] format" })
+
+-- Folding
+keymap('n', 'zR', require('ufo').openAllFolds, merge(opts, { desc = "Open all folds" }))
+keymap('n', 'zM', require('ufo').closeAllFolds, merge(opts, { desc = "Close all folds" }))
 
 -- Close buffers
 keymap("n", "<leader>cx", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))

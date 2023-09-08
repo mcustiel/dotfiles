@@ -76,24 +76,24 @@ require('lazy').setup({
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
-  -- {
-  --   -- LSP Configuration & Plugins
-  --   'neovim/nvim-lspconfig',
-  --   dependencies = {
-  --     -- Automatically install LSPs to stdpath for neovim
-  --     { 'williamboman/mason.nvim', config = true },
-  --     'williamboman/mason-lspconfig.nvim',
-  --
-  --     -- Useful status updates for LSP
-  --     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-  --     { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
-  --
-  --     -- Additional lua configuration, makes nvim stuff amazing!
-  --     'folke/neodev.nvim',
-  --   },
-  -- },
+ -- {
+    -- LSP Configuration & Plugins
+ --  'neovim/nvim-lspconfig',
+ --   dependencies = {
+ --     -- Automatically install LSPs to stdpath for neovim
+ --     { 'williamboman/mason.nvim', config = true },
+ --     'williamboman/mason-lspconfig.nvim',
 
-  -- {
+--      -- Useful status updates for LSP
+--      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+--      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+
+--      -- Additional lua configuration, makes nvim stuff amazing!
+--      'folke/neodev.nvim',
+--    },
+--  },
+
+-- {
   --   -- Autocompletion
   --   'hrsh7th/nvim-cmp',
   --   dependencies = {
@@ -124,12 +124,23 @@ require('lazy').setup({
   --       changedelete = { text = '~' },
   --     },
   --     on_attach = function(bufnr)
-  --       vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-  --       vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-  --       vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
-  --     end,
-  --   },
-  -- },
+--        vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+
+--        -- don't override the built-in and fugitive keymaps
+--        local gs = package.loaded.gitsigns
+--        vim.keymap.set({'n', 'v'}, ']c', function()
+--          if vim.wo.diff then return ']c' end
+--          vim.schedule(function() gs.next_hunk() end)
+--          return '<Ignore>'
+--        end, {expr=true, buffer = bufnr, desc = "Jump to next hunk"})
+--        vim.keymap.set({'n', 'v'}, '[c', function()
+--          if vim.wo.diff then return '[c' end
+--          vim.schedule(function() gs.prev_hunk() end)
+--          return '<Ignore>'
+--        end, {expr=true, buffer = bufnr, desc = "Jump to previous hunk"})
+--      end,
+--   },
+-- },
 
   -- {
   --   -- Theme inspired by Atom
@@ -169,20 +180,25 @@ require('lazy').setup({
   -- { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
-  -- { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
-
-  -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-  -- Only load if `make` is available. Make sure you have the system
-  -- requirements installed.
-  -- {
-  --   'nvim-telescope/telescope-fzf-native.nvim',
-  --   -- NOTE: If you are having trouble with this installation,
-  --   --       refer to the README for telescope-fzf-native for more instructions.
-  --   build = 'make',
-  --   cond = function()
-  --     return vim.fn.executable 'make' == 1
-  --   end,
-  -- },
+  --{
+  --  'nvim-telescope/telescope.nvim',
+  --  branch = '0.1.x',
+  --  dependencies = {
+  --    'nvim-lua/plenary.nvim',
+  --    -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+  --    -- Only load if `make` is available. Make sure you have the system
+  --    -- requirements installed.
+  --    {
+  --      'nvim-telescope/telescope-fzf-native.nvim',
+  --      -- NOTE: If you are having trouble with this installation,
+  --      --       refer to the README for telescope-fzf-native for more instructions.
+  --      build = 'make',
+  --      cond = function()
+  --        return vim.fn.executable 'make' == 1
+  --      end,
+  --    },
+  --  },
+  --},
 
   -- {
   --   -- Highlight, edit, and navigate code
@@ -305,6 +321,7 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]resume' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -408,7 +425,7 @@ local on_attach = function(_, bufnr)
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')

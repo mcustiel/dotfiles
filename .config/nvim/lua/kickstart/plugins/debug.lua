@@ -25,15 +25,12 @@ return {
 
     {
       'microsoft/vscode-js-debug',
-      config = function()
-      end,
-      -- ft = {'typescript', 'javascript'},
-      -- opt = true,
-      -- build = 'npm install --legacy-peer-deps && npm run compile',
+
+      config = function() end,
+
       build =
       'rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git checkout -- package*.json',
     },
-
   },
 
   config = function()
@@ -66,12 +63,12 @@ return {
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = "[DEBUG] Start/Continue" })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = "[DEBUG] Step Into" })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = "[DEBUG] Step Over" })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = "[DEBUG] Step Out" })
-    vim.keymap.set('n', '<F4>', dap.close, { desc = "[DEBUG] Stop" })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = "[DEBUG] Toggle breakpoint" })
+    vim.keymap.set('n', '<F5>', dap.continue, { desc = '[DEBUG] Start/Continue' })
+    vim.keymap.set('n', '<F1>', dap.step_into, { desc = '[DEBUG] Step Into' })
+    vim.keymap.set('n', '<F2>', dap.step_over, { desc = '[DEBUG] Step Over' })
+    vim.keymap.set('n', '<F3>', dap.step_out, { desc = '[DEBUG] Step Out' })
+    vim.keymap.set('n', '<F4>', dap.close, { desc = '[DEBUG] Stop' })
+    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = '[DEBUG] Toggle breakpoint' })
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Debug: Set Breakpoint' })
@@ -111,6 +108,15 @@ return {
     -- Install golang specific config
     -- require('dap-go').setup()
 
+    -- dap.configurations.go = {
+    --   {
+    --     type = 'go',
+    --     name = 'Debug',
+    --     request = 'launch',
+    --     program = '${file}',
+    --   }
+    -- }
+    --
     require('dap-vscode-js').setup({
       -- node_path = 'node', -- Path of node executable. Defaults to $NODE_PATH, and then 'node'
       debugger_path = os.getenv('MC_JS_DEBUG') or vim.fn.stdpath('data') .. '/lazy/vscode-js-debug', -- Path to vscode-js-debug installation.
@@ -134,59 +140,48 @@ return {
     for _, language in ipairs({ "typescript", "javascript" }) do
       dap.configurations[language] = {
         {
-          name = "Launch file",
-          type = "pwa-node",
-          request = "launch",
-          program = "${file}",
-          cwd = "${workspaceFolder}",
+          name = 'Launch file',
+          type = 'pwa-node',
+          request = 'launch',
+          program = '${file}',
+          cwd = '${workspaceFolder}',
           sourceMaps = true,
-          -- skipFiles = { '<node_internals>/**' },
-          -- protocol = 'inspector',
-          -- rootPath = '${workspaceFolder}',
-          -- sourceMaps = true,
-          -- skipFiles = { '<node_internals>/**' },
-          -- protocol = 'inspector',
-          -- console = 'integratedTerminal',
-          preLaunchTask = "tsc",
-          -- outFiles = {"${workspaceFolder}/build/**/*.js"}
+          preLaunchTask = 'tsc',
         },
         {
-          name = "Attach to node process",
-          type = "pwa-node",
-          request = "attach",
-          processId = require("dap.utils").pick_process,
-          cwd = "${workspaceFolder}",
+          name = 'Attach to node process',
+          type = 'pwa-node',
+          request = 'attach',
+          processId = require('dap.utils').pick_process,
+          cwd = '${workspaceFolder}',
           rootPath = '${workspaceFolder}',
         },
         {
-          name = "Debug Jest Tests",
-          type = "pwa-node",
-          request = "launch",
-          -- trace = true, -- include debugger info
-          runtimeExecutable = "node",
+          name = 'Debug Jest Tests',
+          type = 'pwa-node',
+          request = 'launch',
+          runtimeExecutable = 'node',
           runtimeArgs = {
-            "./node_modules/jest/bin/jest.js",
-            "--runInBand",
+            './node_modules/jest/bin/jest.js',
+            '--runInBand',
           },
-          rootPath = "${workspaceFolder}",
-          cwd = "${workspaceFolder}",
-          console = "integratedTerminal",
-          internalConsoleOptions = "neverOpen",
+          rootPath = '${workspaceFolder}',
+          cwd = '${workspaceFolder}',
+          console = 'integratedTerminal',
+          internalConsoleOptions = 'neverOpen',
         },
         {
-          name = "TS Node Launch",
-          type = "pwa-node",
-          request = "launch",
+          name = 'TS Node Launch',
+          type = 'pwa-node',
+          request = 'launch',
           sourceMaps = true,
-          cwd = "${workspaceFolder}",
-          -- runtimeExecutable = "node",
-          runtimeExecutable = "node",
-          runtimeArgs = { "--nolazy", "-r", "ts-node/register" },
+          cwd = '${workspaceFolder}',
+          runtimeExecutable = 'node',
+          runtimeArgs = { '--nolazy', '-r', 'ts-node/register' },
 
-          args = { "--inspect", "${file}" },
+          args = { '--inspect', '${file}' },
 
-          -- internalConsoleOptions = "openOnSessionStart",
-          skipFiles = { "<node_internals>/**", "node_modules/**" },
+          skipFiles = { '<node_internals>/**', 'node_modules/**' },
         },
       }
     end
