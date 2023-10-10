@@ -155,11 +155,11 @@ vim.api.nvim_create_autocmd(
 		command = '%s/\\s\\+$//e'
 	})
 
-vim.api.nvim_create_autocmd(
-	"BufReadPost,FileReadPost", {
-		pattern = { "*" },
-		command = "normal zR",
-	}
-)
+-- vim.api.nvim_create_autocmd(
+-- 	"BufReadPost,FileReadPost", {
+-- 		pattern = { "*" },
+-- 		command = "normal zR",
+-- 	}
+-- )
 vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
 vim.cmd([[ autocmd FileType php set iskeyword+=$ ]])

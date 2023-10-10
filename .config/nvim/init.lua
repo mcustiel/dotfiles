@@ -186,14 +186,14 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
-    'c', 'cpp', -- 'go', 'v',
-    -- 'python', 'rust',
-    'tsx', 'javascript', 'typescript',
-    'java', -- 'php',
-     'lua', 'vimdoc', 'vim',
-    'bash', 'regex',
-    'json', 'yaml', 'html',
-  },
+      'c', 'cpp', -- 'go', 'v',
+      -- 'python', 'rust',
+      'tsx', 'javascript', 'typescript',
+      'java', -- 'php',
+      'lua', 'vimdoc', 'vim',
+      'bash', 'regex',
+      'json', 'yaml', 'html',
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -338,7 +338,7 @@ snippet_support.textDocument.completion.completionItem.snippetSupport = true
 
 local servers = {
   -- clangd = {},
-  -- gopls = {},
+  gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
 
@@ -346,14 +346,10 @@ local servers = {
 
   tsserver = {},
 
-  html = { filetypes = { 'html', 'twig', 'hbs'}, capabilities = snippet_support },
+  html = { filetypes = { 'html', 'twig', 'hbs' }, capabilities = snippet_support },
 
   bashls = {},
 
-  jdtls = {
-    cmd = {'/Users/mCustiel/Development/tools/jdt-language-server/bin/jdtls'},
-    root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw', 'pom.xml'}, { upward = true })[1]),
-  },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -369,9 +365,11 @@ local servers = {
 
   yamlls = {},
 
-  -- phpactor = {},
+  phpactor = {},
 
-  -- vls = {},
+  vls = {},
+
+  zls = {},
 }
 
 -- Setup neovim lua configuration
