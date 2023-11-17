@@ -350,6 +350,11 @@ local servers = {
 
   bashls = {},
 
+  -- jdtls = {
+  --   cmd = {'/Users/mCustiel/Development/tools/jdt-language-server/bin/jdtls'},
+  --   root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw', 'pom.xml'}, { upward = true })[1]),
+  -- },
+
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
