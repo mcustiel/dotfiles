@@ -430,7 +430,9 @@ local servers = {
 
   vls = {},
 
-  zls = {},
+  zls = {
+    enable_autofix = false,
+  },
 }
 
 -- Setup neovim lua configuration
