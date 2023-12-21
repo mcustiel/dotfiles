@@ -18,5 +18,6 @@ alias lnt='yarn lint'
 alias tst='yarn test'
 
 # alias goto-sp = 'cdws some-project'
+alias q='exit'
 
 successmsg "Aliases done. ${CHECK}"
