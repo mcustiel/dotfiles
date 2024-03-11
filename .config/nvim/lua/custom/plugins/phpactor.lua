@@ -14,7 +14,7 @@ return {
 		require("phpactor").setup({
 			install = {
 				bin = "/home/mcustiel/Development/scripts/phpactor",
-			}
+			},
 		})
 
 		local status_ok, null_ls = pcall(require, "null-ls")
@@ -28,8 +28,8 @@ return {
 			generator = {
 				fn = function()
 					vim.cmd([[ PhpActor transform ]])
-				end
-			}
+				end,
+			},
 		})
 	end,
 }

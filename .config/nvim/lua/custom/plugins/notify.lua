@@ -2,7 +2,7 @@
 -- Displays nice notify popups
 -- ------------------------------------------------------------------------------
 return {
-	'rcarriga/nvim-notify',
+	"rcarriga/nvim-notify",
 
 	config = function()
 		local notify = require("notify")

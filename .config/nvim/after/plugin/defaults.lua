@@ -17,17 +17,17 @@ local function merge(dest, origin)
 	return merged
 end
 
-vo.fileencoding = 'UTF-8'
+vo.fileencoding = "UTF-8"
 vo.conceallevel = 0
 vo.hlsearch = true
 vim.o.hlsearch = true
-vo.cursorline = true         -- highlight the current line
-vo.number = true             -- set numbered lines
-vo.relativenumber = true     -- set relative numbered lines
+vo.cursorline = true -- highlight the current line
+vo.number = true -- set numbered lines
+vo.relativenumber = true -- set relative numbered lines
 
 vo.guifont = "monospace:h17" -- the font used in graphical neovim applications
 
-vo.smartcase = true          -- smart case
+vo.smartcase = true -- smart case
 
 vo.softtabstop = 2
 vo.tabstop = 2
@@ -35,8 +35,8 @@ vo.shiftwidth = 2
 
 -- vo.foldmethod = "expr"
 -- vo.foldexpr = "nvim_treesitter#foldexpr()"
-vo.foldcolumn = '1' -- '0' is not bad
-vo.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vo.foldcolumn = "1" -- '0' is not bad
+vo.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vo.foldlevelstart = 99
 vo.foldenable = true
 
@@ -51,8 +51,8 @@ vo.incsearch = true
 local keymap = vim.keymap.set
 
 local toggle_hl_search = function()
-	local hlsearch = vim.api.nvim_get_vvar('hlsearch')
-	if (hlsearch == 1) then
+	local hlsearch = vim.api.nvim_get_vvar("hlsearch")
+	if hlsearch == 1 then
 		-- vim.api.nvim_set_vvar('hlsearch', 0)
 		vim.cmd([[ :set nohlsearch ]])
 	else
@@ -68,11 +68,15 @@ keymap("n", "<leader>sl", toggle_hl_search, merge(opts, { desc = "Toggle hlsearc
 keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvim Tree" }))
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
 keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show current file in Nvim Tree" }))
-keymap("n", "<leader>fs", ":NvimTreeFindFile<cr><C-w><C-p>",
-	merge(opts, { desc = "Show current file Nvim Tree and continue editing" }))
+keymap(
+	"n",
+	"<leader>fs",
+	":NvimTreeFindFile<cr><C-w><C-p>",
+	merge(opts, { desc = "Show current file Nvim Tree and continue editing" })
+)
 
 -- Search
-keymap('n', '<leader>sc', require('telescope.builtin').resume, { desc = '[S]earch [C]ontinue' })
+keymap("n", "<leader>sc", require("telescope.builtin").resume, { desc = "[S]earch [C]ontinue" })
 
 -- Switch between windows
 keymap("n", "<leader>h", "<C-w>h", merge(opts, { desc = "Switch to window on the left" }))
@@ -104,8 +108,8 @@ keymap("n", "<Leader>cf", function()
 end, { desc = "[lsp] format" })
 
 -- Folding
-keymap('n', 'zR', require('ufo').openAllFolds, merge(opts, { desc = "Open all folds" }))
-keymap('n', 'zM', require('ufo').closeAllFolds, merge(opts, { desc = "Close all folds" }))
+keymap("n", "zR", require("ufo").openAllFolds, merge(opts, { desc = "Open all folds" }))
+keymap("n", "zM", require("ufo").closeAllFolds, merge(opts, { desc = "Close all folds" }))
 
 -- Close buffers
 keymap("n", "<leader>cx", ":%bd<CR>", merge(opts, { desc = "Close all buffers" }))
@@ -117,14 +121,21 @@ keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "
 
 -- Trouble
 keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
-keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-	merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" }))
-keymap("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-	merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" }))
+keymap(
+	"n",
+	"<leader>xw",
+	"<cmd>TroubleToggle workspace_diagnostics<cr>",
+	merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" })
+)
+keymap(
+	"n",
+	"<leader>xd",
+	"<cmd>TroubleToggle document_diagnostics<cr>",
+	merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" })
+)
 keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", merge(opts, { desc = "Trouble: Display [l]oclist" }))
 keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", merge(opts, { desc = "Trouble: Display [q]uickfix" }))
 keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", merge(opts, { desc = "Trouble-LSP: [g]oto [r]eferences" }))
-
 
 -- Insert --
 -- Press jk fast to enter normal mode
@@ -140,20 +151,25 @@ keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window si
 -- keymap("v", "<up>", "<ESC>:m '<-2<CR>gv=gv", merge(opts, { desc = "Decrease window size vertically" }))
 -- keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
-vim.api.nvim_create_autocmd(
-	"BufLeave", {
-		pattern = {
-			"*.c", "*.h",
-			"*.ts", "*.json", "*.js", "*.yaml",
-			"*.php", "*.java",
-			"*.go", "*.v",
-			"*.sh",
-			"Makefile",
-			"*.lua",
-			"*.conf",
-		},
-		command = '%s/\\s\\+$//e'
-	})
+vim.api.nvim_create_autocmd("BufLeave", {
+	pattern = {
+		"*.c",
+		"*.h",
+		"*.ts",
+		"*.json",
+		"*.js",
+		"*.yaml",
+		"*.php",
+		"*.java",
+		"*.go",
+		"*.v",
+		"*.sh",
+		"Makefile",
+		"*.lua",
+		"*.conf",
+	},
+	command = "%s/\\s\\+$//e",
+})
 
 -- vim.api.nvim_create_autocmd(
 -- 	"BufReadPost,FileReadPost", {
