@@ -1,6 +1,8 @@
 return { -- Autoformat
 	'stevearc/conform.nvim',
 
+	enabled = false,
+
 	opts = {
 		notify_on_error = false,
 		format_on_save = {
@@ -18,3 +20,5 @@ return { -- Autoformat
 		},
 	},
 }
+
+-- vim: ts=2 sts=2 sw=2 et

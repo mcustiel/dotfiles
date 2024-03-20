@@ -16,3 +16,5 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
     },
   },
 }
+
+-- vim: ts=2 sts=2 sw=2 et
