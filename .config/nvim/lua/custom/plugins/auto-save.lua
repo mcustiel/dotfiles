@@ -2,9 +2,9 @@
 -- Autosaves buffer after leaving the insert mode
 -- ------------------------------------------------------------------------------
 return {
-	"Pocco81/auto-save.nvim",
+  "Pocco81/auto-save.nvim",
 
-	opts = {},
+  opts = {},
 }
 
 -- vim: ts=2 sts=2 sw=2 et

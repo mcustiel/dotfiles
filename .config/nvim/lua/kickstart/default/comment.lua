@@ -1,8 +1,8 @@
 -- "gc" to comment visual regions/lines
 return {
-	'numToStr/Comment.nvim',
+  'numToStr/Comment.nvim',
 
-	opts = {}
+  opts = {}
 }
 
 -- vim: ts=2 sts=2 sw=2 et

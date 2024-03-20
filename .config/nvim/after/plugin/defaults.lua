@@ -196,6 +196,9 @@ vim.api.nvim_create_autocmd("BufLeave", {
 		"*.json",
 		"*.js",
 		"*.yaml",
+		"*.html",
+		"*.htmx",
+		"*.phtml",
 		"*.php",
 		"*.java",
 		"*.go",
@@ -214,6 +217,8 @@ vim.api.nvim_create_autocmd("BufLeave", {
 -- 		command = "normal zR",
 -- 	}
 -- )
+vim.cmd([[au BufNewFile,BufRead *.htmx set filetype=html]])
+vim.cmd([[au BufNewFile,BufRead *.phtml set filetype=php]])
 vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
 vim.cmd([[ autocmd FileType php set iskeyword+=$ ]])
 
