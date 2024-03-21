@@ -13,7 +13,7 @@ snippet_support.textDocument.completion.completionItem.snippetSupport = true
 
 local servers = {
   -- clangd = {},
-  gopls = {},
+  -- gopls = {},
 
   -- pyright = {},
   -- rust_analyzer = {},
@@ -39,17 +39,12 @@ local servers = {
 
   yamlls = {},
 
-  phpactor = {},
+  -- phpactor = {},
 
-  vls = {},
+  -- vls = {},
 
-  zls = {
-    enable_autofix = false,
-  },
-
-  -- jdtls = {
-  --   cmd = {'/Users/mCustiel/Development/tools/jdt-language-server/bin/jdtls'},
-  --   root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw', 'pom.xml'}, { upward = true })[1]),
+  -- zls = {
+  --   enable_autofix = false,
   -- },
 
   lua_ls = {
@@ -97,7 +92,19 @@ return { -- LSP Configuration & Plugins
 
     {
       'williamboman/mason-lspconfig.nvim',
+
       config = function()
+        -- NOTE: UNCOMMENT THE FOLLOWING TO SUPPORT JAVA
+        --
+        -- local lspconfig = require('lspconfig')
+        -- vim.list_extend(servers, {
+        --   jdtls = {
+        --     cmd = { '/Users/mCustiel/Development/tools/jdt-language-server/bin/jdtls' },
+        --     -- root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw', 'pom.xml'}, { upward = true })[1]),
+        --     root_dir = lspconfig.util.root_pattern('gradlew', '.git', 'mvnw', 'pom.xml') or vim.fn.getcwd()
+        --   },
+        -- })
+
         -- LSP servers and clients are able to communicate to each other what features they support.
         --  By default, Neovim doesn't support everything that is in the LSP Specification.
         --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.

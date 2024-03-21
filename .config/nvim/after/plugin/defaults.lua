@@ -4,30 +4,30 @@ local vo = vim.opt
 -- local vc = vim.cmd
 
 local function merge(dest, origin)
-	local merged = {}
+  local merged = {}
 
-	for k, v in pairs(dest) do
-		merged[k] = v
-	end
+  for k, v in pairs(dest) do
+    merged[k] = v
+  end
 
-	for k, v in pairs(origin) do
-		merged[k] = v
-	end
+  for k, v in pairs(origin) do
+    merged[k] = v
+  end
 
-	return merged
+  return merged
 end
 
 vo.fileencoding = "UTF-8"
 vo.conceallevel = 0
 vo.hlsearch = true
 vim.o.hlsearch = true
-vo.cursorline = true -- highlight the current line
-vo.number = true -- set numbered lines
-vo.relativenumber = true -- set relative numbered lines
+vo.cursorline = true         -- highlight the current line
+vo.number = true             -- set numbered lines
+vo.relativenumber = true     -- set relative numbered lines
 
 vo.guifont = "monospace:h17" -- the font used in graphical neovim applications
 
-vo.smartcase = true -- smart case
+vo.smartcase = true          -- smart case
 
 vo.softtabstop = 2
 vo.tabstop = 2
@@ -36,7 +36,7 @@ vo.shiftwidth = 2
 -- vo.foldmethod = "expr"
 -- vo.foldexpr = "nvim_treesitter#foldexpr()"
 vo.foldcolumn = "1" -- '0' is not bad
-vo.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vo.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
 vo.foldlevelstart = 99
 vo.foldenable = true
 
@@ -51,51 +51,51 @@ vo.incsearch = true
 local keymap = vim.keymap.set
 
 local toggle_hl_search = function()
-	local hlsearch = vim.api.nvim_get_vvar("hlsearch")
-	if hlsearch == 1 then
-		-- vim.api.nvim_set_vvar('hlsearch', 0)
-		vim.cmd([[ :set nohlsearch ]])
-	else
-		-- vim.api.nvim_set_vvar('hlsearch', 1)
-		vim.cmd([[ :set hlsearch ]])
-	end
+  local hlsearch = vim.api.nvim_get_vvar("hlsearch")
+  if hlsearch == 1 then
+    -- vim.api.nvim_set_vvar('hlsearch', 0)
+    vim.cmd([[ :set nohlsearch ]])
+  else
+    -- vim.api.nvim_set_vvar('hlsearch', 1)
+    vim.cmd([[ :set hlsearch ]])
+  end
 end
 
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
-	-- Use the current buffer's path as the starting point for the git search
-	local current_file = vim.api.nvim_buf_get_name(0)
-	local current_dir
-	local cwd = vim.fn.getcwd()
-	-- If the buffer is not associated with a file, return nil
-	if current_file == '' then
-	  current_dir = cwd
-	else
-	  -- Extract the directory from the current file's path
-	  current_dir = vim.fn.fnamemodify(current_file, ':h')
-	end
-
-	-- Find the Git root directory from the current file's path
-	local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
-	if vim.v.shell_error ~= 0 then
-	  print 'Not a git repository. Searching on current working directory'
-	  return cwd
-	end
-	return git_root
+  -- Use the current buffer's path as the starting point for the git search
+  local current_file = vim.api.nvim_buf_get_name(0)
+  local current_dir
+  local cwd = vim.fn.getcwd()
+  -- If the buffer is not associated with a file, return nil
+  if current_file == '' then
+    current_dir = cwd
+  else
+    -- Extract the directory from the current file's path
+    current_dir = vim.fn.fnamemodify(current_file, ':h')
   end
 
-  -- Custom live_grep function to search in git root
-  local function live_grep_git_root()
-	local git_root = find_git_root()
-	if git_root then
-	  require('telescope.builtin').live_grep {
-		search_dirs = { git_root },
-	  }
-	end
+  -- Find the Git root directory from the current file's path
+  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
+  if vim.v.shell_error ~= 0 then
+    print 'Not a git repository. Searching on current working directory'
+    return cwd
   end
+  return git_root
+end
 
-  vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
+-- Custom live_grep function to search in git root
+local function live_grep_git_root()
+  local git_root = find_git_root()
+  if git_root then
+    require('telescope.builtin').live_grep {
+      search_dirs = { git_root },
+    }
+  end
+end
+
+vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- Toggle hlsearch
 keymap("n", "<leader>sl", toggle_hl_search, merge(opts, { desc = "Toggle hlsearch" }))
@@ -105,10 +105,10 @@ keymap("n", "<leader>y", ":NvimTreeToggle<cr>", merge(opts, { desc = "Toggle Nvi
 keymap("n", "<leader>t", ":NvimTreeFocus<cr>", merge(opts, { desc = "Focus Nvim Tree" }))
 keymap("n", "<leader>ff", ":NvimTreeFindFile<cr>", merge(opts, { desc = "Show current file in Nvim Tree" }))
 keymap(
-	"n",
-	"<leader>fs",
-	":NvimTreeFindFile<cr><C-w><C-p>",
-	merge(opts, { desc = "Show current file Nvim Tree and continue editing" })
+  "n",
+  "<leader>fs",
+  ":NvimTreeFindFile<cr><C-w><C-p>",
+  merge(opts, { desc = "Show current file Nvim Tree and continue editing" })
 )
 
 -- Search
@@ -141,7 +141,7 @@ keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file auto
 -- Format code
 --keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
 keymap("n", "<Leader>cf", function()
-	vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+  vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
 end, { desc = "[lsp] format" })
 
 -- Folding
@@ -159,16 +159,16 @@ keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "
 -- Trouble
 keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
 keymap(
-	"n",
-	"<leader>xw",
-	"<cmd>TroubleToggle workspace_diagnostics<cr>",
-	merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" })
+  "n",
+  "<leader>xw",
+  "<cmd>TroubleToggle workspace_diagnostics<cr>",
+  merge(opts, { desc = "Trouble: Display [w]orkspace diagnostics" })
 )
 keymap(
-	"n",
-	"<leader>xd",
-	"<cmd>TroubleToggle document_diagnostics<cr>",
-	merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" })
+  "n",
+  "<leader>xd",
+  "<cmd>TroubleToggle document_diagnostics<cr>",
+  merge(opts, { desc = "Trouble: Display [d]ocument diagnostics" })
 )
 keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", merge(opts, { desc = "Trouble: Display [l]oclist" }))
 keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", merge(opts, { desc = "Trouble: Display [q]uickfix" }))
@@ -189,26 +189,26 @@ keymap("i", "<C-s>", "<ESC>:w<CR>==gi", merge(opts, { desc = "Decrease window si
 -- keymap("v", "<down>", "<ESC>:m '>+2<CR>gv=gv", opts)
 
 vim.api.nvim_create_autocmd("BufLeave", {
-	pattern = {
-		"*.c",
-		"*.h",
-		"*.ts",
-		"*.json",
-		"*.js",
-		"*.yaml",
-		"*.html",
-		"*.htmx",
-		"*.phtml",
-		"*.php",
-		"*.java",
-		"*.go",
-		"*.v",
-		"*.sh",
-		"Makefile",
-		"*.lua",
-		"*.conf",
-	},
-	command = "%s/\\s\\+$//e",
+  pattern = {
+    "*.c",
+    "*.h",
+    "*.ts",
+    "*.json",
+    "*.js",
+    "*.yaml",
+    "*.html",
+    "*.htmx",
+    "*.phtml",
+    "*.php",
+    "*.java",
+    "*.go",
+    "*.v",
+    "*.sh",
+    "Makefile",
+    "*.lua",
+    "*.conf",
+  },
+  command = "%s/\\s\\+$//e",
 })
 
 -- vim.api.nvim_create_autocmd(
