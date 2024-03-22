@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function _wsdirs() {
+    local cur prev
+
+    cur=${COMP_WORDS[COMP_CWORD]}
+
+    case ${COMP_CWORD} in
+        1)
+            COMPREPLY=($(compgen -W "$(ls -d $WORKSPACE_PATH/* | xargs basename)" -- ${cur}))
+            ;;
+        *)  
+            COMPREPLY=()
+            ;;
+    esac
+}
+
+if [ $(command -v "complete") ]; then
+  complete -F _wsdirs cdws
+fi
