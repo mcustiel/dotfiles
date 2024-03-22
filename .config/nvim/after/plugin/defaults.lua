@@ -20,7 +20,7 @@ end
 vo.fileencoding = "UTF-8"
 vo.conceallevel = 0
 vo.hlsearch = true
-vim.o.hlsearch = true
+vo.hlsearch = true
 vo.cursorline = true         -- highlight the current line
 vo.number = true             -- set numbered lines
 vo.relativenumber = true     -- set relative numbered lines
@@ -136,7 +136,19 @@ keymap("n", "<up>", ":m .-2<CR>", merge(opts, { desc = "Move line up" }))
 keymap("n", "<down>", ":m .+1<CR>", merge(opts, { desc = "Move line down" }))
 
 -- Toggle autosave
-keymap("n", "<leader>n", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
+keymap("n", "<leader>na", ":ASToggle<CR>", merge(opts, { desc = "Toggle file autosaving" }))
+
+-- Change line numbers format
+keymap("n", "<leader>nr", ":setlocal number relativenumber<CR>", merge(opts, { desc = "Set line numbers to relative" }))
+keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>", merge(opts, { desc = "Set line numbers to not relative" }))
+keymap("n", "<leader>nt", function()
+  local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
+  if rn then
+    vim.opt_local.relativenumber = false
+  else
+    vim.opt_local.relativenumber = true
+  end
+end, merge(opts, { desc = "Toggle line numbers" }))
 
 -- Format code
 --keymap("n", "<leader>cf", vim.lsp.buf.format, merge(opts, { desc = "[C]ode [F]ormat" }))
