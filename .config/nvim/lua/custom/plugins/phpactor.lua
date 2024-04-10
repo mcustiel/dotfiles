@@ -13,8 +13,8 @@ return {
   config = function()
     require("phpactor").setup({
       install = {
-        -- bin = "/home/mcustiel/Development/scripts/phpactor",
-        bin = "phpactor",
+        bin = "/home/mcustiel/Development/scripts/phpactor",
+        -- bin = "phpactor",
       },
     })
 

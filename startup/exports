@@ -4,9 +4,29 @@ msg "Exporting global environment variables..."
 
 export CLICOLOR=1
 
+MC_CURRENT_OS="$(uname -s)"
+export MC_CURRENT_OS
+
+export MC_WORKSPACE_PATH="$HOME/Development/workspaces"
+
+# AWS
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+
+# Docker
+DOCKER_BUILDKIT=1
+
+# Dev Tokens
+export GITHUB_TOKEN=
+export GITLAB_TOKEN=
 export GH_REGISTRY_TOKEN=
 export GH_REGISTRY_USERNAME=
 
+# Golang
+#export GOROOT=~/Development/languages/go
+#export GOPATH=~/Development/workspaces/go
+
+# Java
 export JAVA_HOME="$(jrunscript -e 'java.lang.System.out.println(java.lang.System.getProperty("java.home"));')"
 #export JAVA_INCLUDE_PATH="/opt/homebrew/opt/openjdk/include"
 # To be used as follows
@@ -14,10 +34,6 @@ export JAVA_HOME="$(jrunscript -e 'java.lang.System.out.println(java.lang.System
 
 # export M2_HOME=/opt/maven
 # export MAVEN_HOME=/opt/maven
-MC_CURRENT_OS="$(uname -s)"
-export MC_CURRENT_OS
-
-export MC_WORKSPACE_PATH="$HOME/ws"
 
 export CHECK="\xE2\x9C\x94"
 export CROSS="\xE2\x9D\x8C\x0A"
