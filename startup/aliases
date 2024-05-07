@@ -20,5 +20,6 @@ alias gpt='git push --follow-tags'
 
 # alias goto-sp = 'cdws some-project'
 alias q='exit'
+alias c='clear'
 
 successmsg "Aliases done. ${CHECK}"
