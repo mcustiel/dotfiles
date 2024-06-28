@@ -94,6 +94,54 @@ local function live_grep_git_root()
   end
 end
 
+-- Add file rename action for typescript
+local function rename_file()
+  local source_file, target_file
+
+  vim.ui.input({
+      prompt = "Source: ",
+      completion = "file",
+      default = vim.api.nvim_buf_get_name(0)
+    },
+    function(input)
+      source_file = input
+    end
+  )
+  vim.ui.input({
+      prompt = "Target: ",
+      completion = "file",
+      default = source_file
+    },
+    function(input)
+      target_file = input
+    end
+  )
+
+  local params = {
+    command = "_typescript.applyRenameFile",
+    arguments = {
+      {
+        sourceUri = source_file,
+        targetUri = target_file,
+      },
+    },
+    title = ""
+  }
+
+  vim.lsp.util.rename(source_file, target_file)
+  vim.lsp.buf.execute_command(params)
+end
+
+
+require("lspconfig").tsserver.setup {
+  commands = {
+    RenameFile = {
+      rename_file,
+      description = "Rename File"
+    },
+  }
+}
+
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- Toggle hlsearch
@@ -139,7 +187,8 @@ keymap("n", "<leader>na", ":ASToggle<CR>", merge(opts, { desc = "Toggle file aut
 
 -- Change line numbers format
 keymap("n", "<leader>nr", ":setlocal number relativenumber<CR>", merge(opts, { desc = "Set line numbers to relative" }))
-keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>", merge(opts, { desc = "Set line numbers to not relative" }))
+keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>",
+  merge(opts, { desc = "Set line numbers to not relative" }))
 keymap("n", "<leader>nt", function()
   local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
   if rn then
@@ -166,6 +215,9 @@ keymap("n", "<leader>cb", ":bd<CR>", merge(opts, { desc = "[C]lose current [B]uf
 
 -- Wordwrap
 keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "[W]ord [W]rap" }))
+
+-- Rename file
+keymap("n", "<leader>rf", ":RenameFile<CR>", merge(opts, { desc = "[R]ename [F]ile for typescript" }))
 
 -- Trouble
 keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
