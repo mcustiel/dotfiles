@@ -219,7 +219,7 @@ keymap("n", "<leader>ww", ":set wrap|:set linebreak<CR>", merge(opts, { desc = "
 -- Rename file
 keymap("n", "<leader>rf", ":RenameFile<CR>", merge(opts, { desc = "[R]ename [F]ile for typescript" }))
 
--- Trouble
+-- Trouble plugin
 keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", merge(opts, { desc = "Display Trouble Window" }))
 keymap(
   "n",
