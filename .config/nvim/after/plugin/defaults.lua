@@ -187,9 +187,10 @@ keymap("n", "<leader>na", ":ASToggle<CR>", merge(opts, { desc = "Toggle file aut
 
 -- Change line numbers format
 keymap("n", "<leader>nr", ":setlocal number relativenumber<CR>", merge(opts, { desc = "Set line numbers to relative" }))
-keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>", merge(opts, { desc = "Set line numbers to not relative" }))
+keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>",
+  merge(opts, { desc = "Set line numbers to not relative" }))
 keymap("n", "<leader>nt", function()
-  local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
+local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
   if rn then
     vim.opt_local.relativenumber = false
   else
