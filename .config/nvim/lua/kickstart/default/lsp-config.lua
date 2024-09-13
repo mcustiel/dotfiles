@@ -1,13 +1,13 @@
-local after = function ()
---  Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. Available keys are:
---  - cmd (table): Override the default command used to start the server
---  - filetypes (table): Override the default list of associated filetypes for the server
---  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
---  - settings (table): Override the default settings passed when initializing the server.
---        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+local after = function()
+  --  Enable the following language servers
+  --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+  --
+  --  Add any additional override configuration in the following tables. Available keys are:
+  --  - cmd (table): Override the default command used to start the server
+  --  - filetypes (table): Override the default list of associated filetypes for the server
+  --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+  --  - settings (table): Override the default settings passed when initializing the server.
+  --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local snippet_support = vim.lsp.protocol.make_client_capabilities()
   snippet_support.textDocument.completion.completionItem.snippetSupport = true
@@ -25,9 +25,10 @@ local after = function ()
     --    https://github.com/pmizio/typescript-tools.nvim
     --
     -- But for many setups, the LSP (`tsserver`) will work just fine
-    tsserver = {},
+    ts_ls = {},
     eslint = {},
     --
+    jdtls = {},
 
     html = { filetypes = { 'html', 'twig', 'hbs' }, capabilities = snippet_support },
 
@@ -41,13 +42,13 @@ local after = function ()
 
     yamlls = {},
 
-    -- phpactor = {},
+    phpactor = {},
 
-    -- vls = {},
+    vls = {},
 
-    -- zls = {
-    --   enable_autofix = false,
-    -- },
+    zls = {
+      enable_autofix = false,
+    },
 
     lua_ls = {
       -- cmd = {...},
@@ -55,6 +56,18 @@ local after = function ()
       -- capabilities = {},
       settings = {
         Lua = {
+          -- runtime = { version = 'LuaJIT' },
+          -- workspace = {
+          --  checkThirdParty = false,
+          -- Tells lua_ls where to find all the Lua files that you have loaded
+          -- for your neovim configuration.
+          --  library = {
+          --    '${3rd}/luv/library',
+          --    unpack(vim.api.nvim_get_runtime_file('', true)),
+          --  },
+          -- If lua_ls is really slow on your computer, you can try this instead:
+          -- library = { vim.env.VIMRUNTIME },
+          --},
           completion = {
             callSnippet = 'Replace',
           },
@@ -229,7 +242,6 @@ return { -- LSP Configuration & Plugins
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           end, '[T]oggle Inlay [H]ints')
         end
-
       end,
     })
     after()

@@ -132,8 +132,7 @@ local function rename_file()
   vim.lsp.buf.execute_command(params)
 end
 
-
-require("lspconfig").tsserver.setup {
+require("lspconfig").ts_ls.setup {
   commands = {
     RenameFile = {
       rename_file,
@@ -190,7 +189,7 @@ keymap("n", "<leader>nr", ":setlocal number relativenumber<CR>", merge(opts, { d
 keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>",
   merge(opts, { desc = "Set line numbers to not relative" }))
 keymap("n", "<leader>nt", function()
-local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
+  local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
   if rn then
     vim.opt_local.relativenumber = false
   else
