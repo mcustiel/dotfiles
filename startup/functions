@@ -10,6 +10,7 @@ function gpuob {
     git push -u origin "$(git rev-parse --abbrev-ref HEAD)"
 }
 
+# Calculate commit difference between current branch and given branch
 function gdcommits {
    git log --graph --pretty=format:'%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(cyan)(%cr)%Creset' --abbrev-commit --date=relative "$(git symbolic-ref --short HEAD)".."$1"
 }
@@ -23,7 +24,7 @@ function gtrefresh() {
 
 # Create dir and go inside
 function mdcd {
-    { test mkdir "$1"; cd "$1"; } || { echo "Operation failed"; exit 1; }
+    { mkdir -v "$1" && cd "$1"; } || { echo "Operation failed"; return 1; }
 }
 
 # Move in place
