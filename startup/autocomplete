@@ -1,16 +1,30 @@
 #!/bin/bash
 
+function joinByChar {
+  OLDIFS=$IFS
+  local IFS="$1"
+  shift
+  echo "$*"
+  IFS=$OLDIFS
+}
+
 function _wsdirs() {
-    local cur prev
+    local cur 
 
     cur=${COMP_WORDS[COMP_CWORD]}
+    basedir=$WORKSPACE_PATH
+    subPath=''
 
     case ${COMP_CWORD} in
-        1)
-            COMPREPLY=($(compgen -W "$(ls -d $WORKSPACE_PATH/* | xargs basename)" -- ${cur}))
-            ;;
-        *)  
+        0)
             COMPREPLY=()
+            ;;
+        *)
+            subPath=$(joinByChar '/' ${COMP_WORDS[@]:1:$((COMP_CWORD-1))})
+            if [ -d $basedir/$subPath ]; then
+                basedir="$basedir/$subPath"
+            fi
+            COMPREPLY=($(compgen -W "$(ls -d $basedir/*/ 2> /dev/null | xargs basename)" -- ${cur}))
             ;;
     esac
 }

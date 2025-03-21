@@ -3,7 +3,12 @@
 msg "Setting up general functions..."
 
 function cdws {
-    cd "$MC_WORKSPACE_PATH/$1" || { echo "Directory not found"l; exit 1; }
+    subPath=""
+    for subDir in "${@:1}"; do 
+        subPath="$subPath/$subDir"
+    done
+
+    cd $WORKSPACE_PATH/$subPath || { echo "Directory not found"l; exit 1; }
 }
 
 function gpuob {
