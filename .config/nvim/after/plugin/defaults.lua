@@ -281,7 +281,7 @@ vim.api.nvim_create_autocmd("BufLeave", {
 -- )
 vim.cmd([[au BufNewFile,BufRead *.htmx set filetype=html]])
 vim.cmd([[au BufNewFile,BufRead *.phtml set filetype=php]])
-vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
+-- vim.cmd([[au BufNewFile,BufRead *.v set filetype=vlang]])
 vim.cmd([[ autocmd FileType php set iskeyword+=$ ]])
 
 -- vim: ts=2 sts=2 sw=2 et
