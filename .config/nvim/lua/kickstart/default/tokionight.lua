@@ -7,7 +7,7 @@ return { -- You can easily change to a different colorscheme.
 
   priority = 1000, -- make sure to load this before all the other start plugins
 
-  init = function()
+  config = function()
      ---@diagnostic disable-next-line: missing-fields
      require('tokyonight').setup {
       styles = {

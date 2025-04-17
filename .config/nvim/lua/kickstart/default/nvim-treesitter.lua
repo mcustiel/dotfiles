@@ -12,11 +12,11 @@ return { -- Highlight, edit, and navigate code
 
   opts = {
     ensure_installed = {
-      'c', -- 'go', 'v', 'zig',
+      'c', 'go', 'v', 'zig',
       -- 'python', 'rust',
       'diff', 'query',
       'tsx', 'javascript', 'typescript',
-      'java', -- 'php',
+      'java', 'php',
       'lua', 'luadoc', 'vim', 'vimdoc',
       'bash', 'regex',
       'json', 'yaml', 'html',
