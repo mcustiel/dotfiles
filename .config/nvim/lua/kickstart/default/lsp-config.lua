@@ -12,8 +12,14 @@ local after = function()
   local snippet_support = vim.lsp.protocol.make_client_capabilities()
 
   snippet_support.textDocument.completion.completionItem.snippetSupport = true
-  capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-
+  capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities({}, false))
+  snippet_support = vim.tbl_deep_extend('force', snippet_support, {
+    textDocument = {
+      completionItem = {
+        snippetSupport = true,
+      }
+    }
+  })
   local servers = {
     -- clangd = {},
     gopls = {},
@@ -26,7 +32,7 @@ local after = function()
     --    https://github.com/pmizio/typescript-tools.nvim
     --
     -- But for many setups, the LSP (`tsserver`) will work just fine
-    ts_ls = {},
+    ts_ls = { capabilities = snippet_support },
     eslint = {},
     --
     jdtls = {},
@@ -120,7 +126,7 @@ return { -- LSP Configuration & Plugins
 
     -- Useful status updates for LSP.
     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim', opts = {} },
+    { 'j-hui/fidget.nvim',       opts = {} },
 
     -- Allows extra capabilities provided by nvim-cmp
     -- 'hrsh7th/cmp-nvim-lsp',
