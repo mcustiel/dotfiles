@@ -1,6 +1,6 @@
 local opts = { noremap = true, silent = true }
 
-local vo = vim.opt
+local vo = vim.o
 -- local vc = vim.cmd
 
 local function merge(dest, origin)
@@ -189,11 +189,11 @@ keymap("n", "<leader>nr", ":setlocal number relativenumber<CR>", merge(opts, { d
 keymap("n", "<leader>nn", ":setlocal number norelativenumber<CR>",
   merge(opts, { desc = "Set line numbers to not relative" }))
 keymap("n", "<leader>nt", function()
-  local rn = vim.opt_local.relativenumber:get() or vim.opt.relativenumber:get()
+  local rn = vim.bo.relativenumber or vim.o.relativenumber
   if rn then
-    vim.opt_local.relativenumber = false
+    vim.bo.relativenumber = false
   else
-    vim.opt_local.relativenumber = true
+    vim.bo.relativenumber = true
   end
 end, merge(opts, { desc = "Toggle line numbers" }))
 

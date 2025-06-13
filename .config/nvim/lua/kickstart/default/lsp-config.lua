@@ -33,8 +33,9 @@ local after = function()
     --
     -- But for many setups, the LSP (`tsserver`) will work just fine
     ts_ls = { capabilities = snippet_support },
+
     eslint = {},
-    --
+
     jdtls = {},
 
     html = { filetypes = { 'html', 'twig', 'hbs' }, capabilities = snippet_support },
@@ -120,16 +121,13 @@ return { -- LSP Configuration & Plugins
 
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for neovim
-    { 'williamboman/mason.nvim', opts = {} },
+    { 'mason-org/mason.nvim', opts = {} },
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
 
     -- Useful status updates for LSP.
     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
     { 'j-hui/fidget.nvim',       opts = {} },
-
-    -- Allows extra capabilities provided by nvim-cmp
-    -- 'hrsh7th/cmp-nvim-lsp',
 
     -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',

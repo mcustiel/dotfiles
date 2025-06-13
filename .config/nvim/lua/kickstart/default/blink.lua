@@ -33,11 +33,13 @@ return { -- Autocompletion
         --   end,
         -- },
       },
+
       opts = {},
     },
 
     'folke/lazydev.nvim',
   },
+
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
   opts = {
@@ -64,6 +66,7 @@ return { -- Autocompletion
       -- <c-k>: Toggle signature help
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
+
       preset = 'enter',
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
