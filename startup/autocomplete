@@ -9,10 +9,10 @@ function joinByChar {
 }
 
 function _wsdirs() {
-    local cur 
+    local cur
 
     cur=${COMP_WORDS[COMP_CWORD]}
-    basedir=$WORKSPACE_PATH
+    basedir=$MC_WORKSPACE_PATH
     subPath=''
 
     case ${COMP_CWORD} in
