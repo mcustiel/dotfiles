@@ -26,18 +26,6 @@ Detailed security requirements have one authoritative home in `~/.codex/instruct
 - Only the primary agent orchestrates subagents. Missing roles, guidance, scope, or withdrawn authorization stop dependent delegation; follow `~/.codex/instructions/delegation.md` and continue independent work where possible.
 - Delegation adds no permission to commit, push, publish, deploy, contact production systems, or perform destructive actions.
 
-## Project abbreviations
-
-Recognize these names case-insensitively:
-
-| Abbreviation | Repository |
-| ------------ | ---------- |
-| RLS | `return-label-service` |
-| FUS | `file-uploader-service` |
-| DRS | `documents-read-service` |
-| DIS | `documents-integration-service` |
-| CSA | `composition-service-account` |
-| CST | `composition-service-transactions` |
 <!-- codebase-memory-mcp:start -->
 For structural codebase exploration, use the installed `codebase-memory` skill.
 <!-- codebase-memory-mcp:end -->
