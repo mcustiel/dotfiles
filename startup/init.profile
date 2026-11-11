@@ -9,5 +9,6 @@ source "$CURDIR/functions"
 source "$CURDIR/aliases"
 source "$CURDIR/path"
 source "$CURDIR/tools"
+source "$CURDIR/autocomplete"
 
 successmsg "Startup successful. $CHECK"

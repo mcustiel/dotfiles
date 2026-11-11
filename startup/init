@@ -10,6 +10,7 @@ source "$CURDIR/aliases"
 source "$CURDIR/path"
 source "$CURDIR/ssh-keys"
 source "$CURDIR/tools"
+source "$CURDIR/autocomplete"
 
 importantmsg "Useful commands: "
 
@@ -32,6 +33,6 @@ echo
 
 infomsg " - gccm <commit_type> <msg>           - Do a conventional commit"
 infomsg " - gdcommits <branch>                 - Calculate difference of commits between current and <branch>"
-echo 
+echo
 
 fun
