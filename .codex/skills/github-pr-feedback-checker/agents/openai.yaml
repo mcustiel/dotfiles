@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR Feedback Checker"
+  short_description: "Verify PR feedback, apply justified fixes, and push"
+  default_prompt: "Use $github-pr-feedback-checker to check this PR's review comments, apply justified changes, run relevant checks, and push the fixes."

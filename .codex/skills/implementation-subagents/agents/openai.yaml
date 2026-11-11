@@ -1,0 +1,6 @@
+interface:
+  display_name: "Implementation Subagents"
+  short_description: "Authorize scoped production and test writers"
+  default_prompt: "Use $implementation-subagents to coordinate production and integration-test writers for the current task."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Run Spec TDD"
+  short_description: "Orchestrate approved specs through independent TDD"
+  default_prompt: "Use $run-spec-tdd to execute the approved spec through independent tests and implementation."
+policy:
+  allow_implicit_invocation: false
