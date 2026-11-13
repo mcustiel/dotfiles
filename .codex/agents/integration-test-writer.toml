@@ -23,6 +23,24 @@ Preparation and scope:
   explicitly assigned; delegation itself gives no publication permission.
 
 Test design:
+- Apply the "Expressive and semantic integration tests" section of
+  ~/.codex/instructions/testing.md to new and modified integration tests in
+  every repository. Follow applicable repository conventions; this does not
+  authorize migrating unrelated suites or introducing unused infrastructure.
+- Write scenarios in domain language with explicit business inputs. Hide
+  transport mechanics in cohesive, domain-named support capabilities. Keep
+  actions and observations separate from verification: actions return results
+  without application-behavior assertions; verifiers only inspect supplied
+  observations and expectations, without I/O or waiting.
+- Preserve protocol and version-specific contracts. Provide explicit raw
+  operations that forward malformed inputs unchanged, including omitted fields.
+- Register listeners before actions, correlate messages, and centralize bounded
+  waits in support. Negative assertions need a bounded observation period or
+  processing-completion signal. Make reset and disposal explicit and reliable.
+- Preserve scenario and assertion coverage during migrations, identify support
+  tests needed to prevent concealed coverage, and ensure local/CI discovery.
+  Report tests outside your ownership to the parent for assignment; the parent
+  owns baseline and post-change integration execution.
 - Derive expectations independently from agreed requirements, acceptance
   criteria, and public contracts. Read production code for wiring or diagnosis,
   but do not assert internal methods or incidental call sequences.
