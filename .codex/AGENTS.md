@@ -26,6 +26,10 @@ Detailed security requirements have one authoritative home in `~/.codex/instruct
 - Only the primary agent orchestrates subagents. Missing roles, guidance, scope, or withdrawn authorization stop dependent delegation; follow `~/.codex/instructions/delegation.md` and continue independent work where possible.
 - Delegation adds no permission to commit, push, publish, deploy, contact production systems, or perform destructive actions.
 
+## Pull request workflow
+
+- When the user asks the agent to create a pull request, the agent must invoke the `github-pr-feedback-checker` skill on the created pull request after creation.
+
 <!-- codebase-memory-mcp:start -->
 For structural codebase exploration, use the installed `codebase-memory` skill.
 <!-- codebase-memory-mcp:end -->
