@@ -34,6 +34,7 @@
 - Keep related data, invariants, and behavior together. Expose cohesive interfaces and hide implementation details; objects and modules are both acceptable.
 - Prefer composition. Use inheritance only when the subtype preserves the complete parent behavioral contract.
 - Use precise domain names, cohesive functions, consistent abstraction levels, and explicit effects. Write comments for rationale, constraints, and non-obvious decisions.
+- Group semantically cohesive blocks of code into clearly named methods or functions when doing so makes the calling code read like clear prose. Choose names that express intent and keep each extracted operation at a consistent level of abstraction.
 - Keep decisions near the data they govern. Expose useful queries without letting callers bypass invariants.
 - Avoid duplicating rules or decisions that must change together. Similar syntax alone does not justify a shared abstraction.
 - Keep simple conditionals when clear. Use strategies or polymorphism when real variation warrants them; do not introduce classes merely to eliminate branching.
