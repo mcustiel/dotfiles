@@ -32,6 +32,7 @@
 
 ## Code quality and behavior
 
+- Prefer straightforward, explicit code over clever tricks, dense expressions, or obscure language features when these make the code harder to understand or maintain.
 - Keep related data, invariants, and behavior together. Expose cohesive interfaces and hide implementation details; objects and modules are both acceptable.
 - Prefer composition. Use inheritance only when the subtype preserves the complete parent behavioral contract.
 - Use precise domain names, cohesive functions, consistent abstraction levels, and explicit effects. Write comments for rationale, constraints, and non-obvious decisions.
