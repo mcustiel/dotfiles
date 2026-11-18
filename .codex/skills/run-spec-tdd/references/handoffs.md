@@ -20,7 +20,9 @@ Integration writer: author tests/fixtures/stubs only; report `tests ready; execu
 
 Unit writer: author supporting isolated unit tests before or during implementation as interfaces become clear; run only inspected unit/static commands. Report actual passing/failing/blocked coverage; unit readiness and unit red are not preimplementation gates. Applicable unit tests must pass before completion. No business implementation or integration execution.
 
-Production writer: implement production only after applicable red/verification and review gates. Run relevant unit/static checks; do not edit tests, snapshots, or spec. Report readiness for primary-agent integration execution.
+Production writer: implement production only after applicable red/verification and review gates. For a behavioral slice, use a fresh context without inherited test-bearing history. Supply the approved spec, public contracts, agreed interfaces, security criteria, production ownership, visible unit-test paths, excluded integration-asset paths, permitted checks, and gate confirmation. Do not supply integration-test source, detailed red output, or reviewer excerpts. Instruct the writer to avoid protected assets and request any necessary disclosure through the primary. Run relevant unit/static/build checks; do not edit tests, snapshots, or spec. Report first-pass readiness for primary-agent integration execution and any prior or accidental exposure. Follow the skill's production writer visibility rules for later feedback/disclosure.
+
+Production failure feedback: criterion ID; relevant input/preconditions; expected observable outcome; actual observable outcome; safe diagnostic facts; required decision or owner action. Omit test implementation and raw suite output. If disclosing test/support source is necessary after the first pass, record the diagnostic reason, exact files/excerpts disclosed, and stage. Retain full red/green evidence for primary-agent verification and reviews.
 
 Test reviewer: before implementation, assess integration acceptance coverage, expectations, test independence/discovery, integration red evidence, and justified technical applicability. Include unit tests already available without requiring unit readiness or unit red. Review supporting unit tests added or changed afterward before slice completion. Read-only review, including new files explicitly; no integration execution. Report actionable findings or limitations.
 
@@ -30,6 +32,7 @@ Record only what is needed to resume and assess the result:
 
 - Spec path, approved revision/digest, and actual approval evidence; delegation approval and bounded scope.
 - Slice/criterion IDs, stage, owners/agent IDs, unresolved decisions and next action.
+- Production writer context mode, first-pass readiness, prior/accidental integration-test exposure, and any later disclosure with reason and scope.
 - Source revision, included working-tree changes and untracked assets; artifact identity/configuration as applicable. Without Git, use a scoped file manifest/content digests.
 - Exact executed command and working directory, outcome, discovered tests, and concise safe failure evidence. Identify expected failing assertions separately from environment/compiler/discovery errors.
 - Criterion → test/check → red-to-green, unmet-to-met, baseline preserved, already satisfied, or not applicable with reason. Record evidence links when available; never expose secrets or unnecessary personal data.

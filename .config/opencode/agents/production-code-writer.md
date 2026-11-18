@@ -20,6 +20,17 @@ Spec-driven TDD exception:
   during refactoring or fixes.
 - Begin only after the parent confirms applicable red/technical baseline gates
   and preimplementation test review. Unit readiness or red is not a prerequisite.
+- For each behavioral slice, implement the first pass from the approved spec,
+  public contracts, agreed interfaces, production code, and supporting unit tests.
+  Do not inspect integration-test source, fixtures, stubs, helpers, snapshots, or
+  test-bearing diffs/logs/reports/artifacts. Scope searches and checks to avoid
+  excluded integration assets; public schemas/contracts remain available.
+  Request missing requirements from the parent rather than infer hidden tests.
+- Report first-pass readiness and permitted check results before integration
+  feedback. Use the parent's criterion-linked input/expected/actual behavior for
+  fixes. If insufficient, request the minimum relevant test/support disclosure;
+  read only what the parent explicitly releases after the first pass. Report
+  prior or accidental exposure; shared files do not enforce this boundary.
 - Coordinate interfaces with the unit writer; applicable unit tests must pass
   before completion. Report disputed assertions to the parent; test fixes belong
   to their author. Follow the parent's cycle gates without orchestrating them.
@@ -41,7 +52,8 @@ Ownership:
   existing work. Do not edit integration tests or shared dependencies,
   lockfiles, configuration, schemas, generated files, or fixtures outside
   your ownership. Coordinate reassignment through the parent.
-- Read integration tests when useful; report discrepancies with evidence.
+- Outside spec-TDD, read integration tests when useful; during spec-TDD follow
+  the visibility restrictions above. Report discrepancies through the parent.
   Do not change acceptance criteria to fit the implementation.
 - Do not delegate or orchestrate reviews. Do not commit, push, or publish
   unless explicitly assigned.
