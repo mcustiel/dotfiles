@@ -2,6 +2,8 @@
 
 ### Shared expectations
 
+- Follow the inspect, match, or ask requirements in `engineering.md`. Before adding or modifying tests, inspect representative tests and support files from the relevant suite. Match established structure and patterns; explain any proposed departure and obtain explicit user approval before implementing it, even when small. The testing preferences below do not authorize a different style or support architecture. Surface conflicts with mandatory requirements and request a decision before affected work; do not weaken security controls, assertions, or required coverage to preserve a pattern.
+
 - Test observable contracts and meaningful behavior. Keep expectations independent of production constants/helpers when sharing them would conceal accidental contract changes.
 - Add or update tests for changed behavior, fixed defects, and security decisions. Avoid tests that merely reproduce implementation details.
 - Cover applicable valid, invalid, boundary, negative, and failure scenarios. Verify required effects and effects that must not occur.
@@ -12,11 +14,13 @@
 ### Unit tests
 
 - Keep tests fast, deterministic, isolated, repeatable, and independent of external services or special environment setup.
-- Follow repository conventions. Prefer RSpec-style `describe`, `beforeEach`, and `it` where clear; execution within individual tests is also acceptable.
+- Match existing unit tests in the relevant repository area, including their suite nesting, setup, test bodies, fixtures, mocking, and assertions. Use RSpec-style `describe`, `beforeEach`, and `it` only when consistent with those conventions, or when no established convention exists and repository guidance permits it.
 - Name tests by context and expected behavior. Avoid complicated shared setup and order dependence.
 - When mocking dependencies, verify relevant arguments and contractual effects without coupling assertions to incidental implementation steps.
 
 ### Integration tests
+
+- Match existing integration tests and their support code in the relevant repository area, including scenario structure, lifecycle hooks, application setup, fixtures, provider stubs, observation helpers, and assertions. Obtain explicit user approval before adopting a different structure or support pattern.
 
 - Exercise the application as a whole through real supported entry points, including HTTP endpoints and message consumers.
 - Independently derive expectations from agreed requirements and public contracts.
@@ -28,6 +32,8 @@
 ## Expressive and semantic integration tests
 
 ### Scope and intent
+
+- Apply the repository conventions and approval requirements above to this entire section. These prescriptions do not authorize introducing new capability classes, verifiers, suite contexts, or support layouts that depart from existing tests. Propose such changes and obtain explicit user approval first; surface conflicts with mandatory requirements before affected work.
 
 - Integration scenarios must describe business setup, actions, and expected
   outcomes using the repository's domain language.

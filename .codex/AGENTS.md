@@ -17,6 +17,10 @@ Apply this guidance to engineering work and follow explicit task instructions an
 
 Detailed security requirements have one authoritative home in `~/.codex/instructions/security.md`. If required guidance is missing or unreadable, report the prerequisite, stop dependent work, and continue safe independent work. Do not claim affected security work, verification, or review is complete. Shared standards govern solo implementation and self-review; the primary agent need not load specialist role files when working alone. Self-review is not independent review.
 
+## Repository conventions
+
+Follow the inspect, match, or ask requirements in `instructions/engineering.md` for production code, unit tests, and integration tests. Inspect representative existing files before writing; obtain explicit user approval before departing from established patterns, even for small improvements. These requirements apply equally to direct and delegated work.
+
 ## Delegation policy
 
 - Work without subagents by default. Delegation is opt-in.
