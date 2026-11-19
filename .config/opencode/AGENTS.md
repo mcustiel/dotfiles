@@ -17,6 +17,10 @@ Apply this guidance to engineering work and follow explicit task instructions an
 
 Detailed security requirements have one authoritative home in `~/.config/opencode/instructions/security.md`. If required guidance is missing or unreadable, report the prerequisite, stop dependent work, and continue safe independent work. Do not claim affected security work, verification, or review is complete. Shared standards govern solo implementation and self-review; the primary agent need not load specialist role files when working alone. Self-review is not independent review.
 
+## Repository conventions
+
+Follow the inspect, match, or ask requirements in `instructions/engineering.md` for production code, unit tests, and integration tests. Inspect representative existing files before writing; obtain explicit user approval before departing from established patterns, even for small improvements. These requirements apply equally to direct and delegated work.
+
 ## Delegation policy
 
 - Work without subagents by default. Delegation is opt-in.
@@ -29,3 +33,18 @@ Detailed security requirements have one authoritative home in `~/.config/opencod
 ## Pull request workflow
 
 - When the user asks the agent to create a pull request, the agent must invoke the `github-pr-feedback-checker` skill on the created pull request after creation.
+
+<!-- codebase-memory-mcp:start -->
+For structural codebase exploration, use the installed `codebase-memory` skill.
+<!-- codebase-memory-mcp:end -->
+
+## OpenCode runtime
+
+- This configuration is installed at `~/.config/opencode`; expand `~` to the user's home directory when a tool needs an absolute path.
+- Load workflows using OpenCode's `skill` tool. Slash commands such as `/review-subagents`, `/implementation-subagents`, and `/run-spec-tdd` are explicit workflow invocations. Merely discovering or migrating a skill does not invoke it or authorize delegation.
+- Delegate only when authorized above. Use `subagent` with the configured agent ID, a short `description`, and a self-contained `prompt`. Retain its returned `sessionID`; continue that child by passing the same ID with a follow-up prompt. Do not use Codex collaboration tool names.
+- Child sessions run in the background and send a completion/idle notification after each round. Do not report an independent gate complete before its actual result arrives. Do not assume an interrupt, release, or wait tool exists: use a supported session-control API if available. If required cancellation or capacity control is unavailable, stop dispatch, report the limitation, and do not claim the child was stopped.
+- Subagents must never launch further subagents. Configured child permissions deny this; the primary agent owns orchestration and integration execution.
+- For structural exploration, use the configured `codebase-memory-mcp` tools. Call `list_projects`/`index_status`; when no matching project exists, index only the intended repository before structural queries. Do not index the global configuration directory simply to inspect Markdown or configuration files.
+- Use native `read`, `glob`, `grep`, `shell`, `websearch`, and `webfetch` tools as available. Discover MCP tools from OpenCode's tool catalog; do not assume Codex tool namespaces, connectors, desktop APIs, or plugin sessions exist.
+- OpenCode permissions govern tools and are not an operating-system sandbox. Follow shared role and security restrictions even when the host permits an operation.
