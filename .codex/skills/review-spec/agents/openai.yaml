@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Spec"
+  short_description: "Find spec ambiguities and verify test derivability"
+  default_prompt: "Use $review-spec to review this spec for correctness, ambiguity, atomicity, and derivable acceptance tests."

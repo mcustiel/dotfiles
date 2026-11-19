@@ -34,6 +34,20 @@ Follow the inspect, match, or ask requirements in `instructions/engineering.md` 
 
 - When the user asks the agent to create a pull request, the agent must invoke the `github-pr-feedback-checker` skill on the created pull request after creation.
 
+## Project abbreviations
+
+Recognize these names case-insensitively:
+
+| Abbreviation | Repository |
+| ------------ | ---------- |
+| RLS | `return-label-service` |
+| FUS | `file-uploader-service` |
+| DRS | `documents-read-service` |
+| DIS | `documents-integration-service` |
+| CSA | `composition-service-account` |
+| CST | `composition-service-transactions` |
+| PCS | `product-complaints-service` |
+
 <!-- codebase-memory-mcp:start -->
 For structural codebase exploration, use the installed `codebase-memory` skill.
 <!-- codebase-memory-mcp:end -->

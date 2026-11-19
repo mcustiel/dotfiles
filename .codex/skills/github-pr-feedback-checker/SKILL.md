@@ -34,8 +34,9 @@ The Copilot review-request exception above applies independently of these routes
 
 1. Establish the PR and working state, verify CLI identity and PR ownership, and apply explicit scope limits.
 2. Start the shared Copilot review-presence check, collect feedback and checks for the recorded head, and investigate CircleCI failures. Preliminary inspection can continue while Copilot is pending; refresh feedback when its review arrives before finalizing decisions.
-3. Follow the selected route: assess only; apply and verify own-PR fixes, commit/push when permitted, and handle eligible Copilot replies/threads; or review another author's PR under its dedicated workflow, without applying fixes. Shared collection and verification procedures supply evidence to either route.
-4. Report the outcome, distinguishing completed work from pending or blocked steps. A pending or blocked Copilot review leaves the full workflow incomplete.
+3. Review applicable specs under [Review applicable specs](#review-applicable-specs) before applying fixes or deciding approval. This applies in either authorship route and in assessment-only mode, subject to explicit scope limits.
+4. Follow the selected route: assess only; apply and verify own-PR fixes, commit/push when permitted, and handle eligible Copilot replies/threads; or review another author's PR under its dedicated workflow, without applying fixes. Shared collection and verification procedures supply evidence to either route.
+5. Report the outcome, distinguishing completed work from pending or blocked steps. A pending or blocked Copilot review leaves the full workflow incomplete.
 
 ### Verification terminology
 
@@ -54,6 +55,18 @@ Use an available GitHub connector when it provides the necessary data; otherwise
 Resolve an explicit PR URL or number first; otherwise infer from the current repository and branch when unambiguous. Ask for the target only if it cannot be reliably determined. For a fork PR, distinguish the base repository from the head repository and push destination.
 
 Record the PR URL, base branch, head repository and branch, and current remote head SHA. Inspect local branch, remotes, status, and applicable instructions before making changes. Use a clean checkout or isolated worktree when needed; preserve existing work and never bundle unrelated local changes. Confirm that the checkout represents the PR's current head before relying on line locations or editing.
+
+## Review applicable specs
+
+Inspect the complete PR file list and diff using repository spec conventions, defaulting to `specs/**/*.md`. Review specifications added or modified by the PR, including renamed specs with content changes, and existing specs explicitly referenced by the PR as governing its changes. Do not review unrelated repository specs. A removed spec is context for the change, not a current spec to approve; report a missing governing contract when relevant. If discovery is incomplete, report that limitation rather than claiming no applicable spec exists.
+
+When applicable specs exist, read and apply `~/.codex/skills/review-spec/SKILL.md` in the primary agent. This conditional invocation does not authorize additional subagents or replace required specialist reviews. Review each complete relevant spec at the recorded PR head, using the diff to distinguish introduced issues from existing ones. For a governing spec outside the repository, record the version or retrieved state. Record the reviewed head, spec paths/revisions, findings, test-derivation map, and readiness verdict. If the skill or a governing spec is unavailable, report spec review as incomplete; do not silently skip it.
+
+Consolidate spec findings with other PR feedback, deduplicating equivalent issues. Material ambiguities require clarification before dependent implementation decisions; do not invent requirements to fix them. Continue independent work where possible. On the different-author route, withhold approval while material spec findings or required spec review remain unresolved. Publish spec findings only under the existing route's publication permissions and safeguards; use a linked summary when a governing spec is outside the diff. Existing spec issues must have a demonstrated impact on the PR to block its approval.
+
+On the own-PR route, apply spec corrections only when the ownership gate and requested scope permit them. Follow `write-spec`'s revision and renewed-approval rules for semantic changes; do not silently alter approved intent to match implementation. Assessment-only and different-author routes remain read-only.
+
+If no applicable spec exists, report spec review as not applicable; this step does not require creating one. If the spec or relevant PR changes change, reassess affected conclusions against the new recorded state before relying on them for fixes or approval. An explicitly excluded spec review must be reported as excluded, not completed.
 
 ## Verify PR ownership before fixing
 
@@ -199,6 +212,6 @@ Report applicable items in this order, omitting empty categories:
 1. **Result:** assessed only, fixed locally, pushed, no changes needed, different-author review published, or blocked; include the PR link and pushed commit when applicable.
 2. **Ownership and mode:** ownership check result, PR author and effective CLI user logins when available, and the selected route. Identify explicit limits or unverifiable identity that restricted the work to assessment.
 3. **Feedback decisions:** concise dispositions with links and evidence. Summarize non-actionable chatter instead of reproducing every comment.
-4. **Verification and review:** Copilot review status (existing, requested and completed, pending, or blocked); local verification and CI results tied to their revisions; CircleCI failure causes with affected revision and run/job links when applicable; and review status. For a different-author review, include the reviewed SHA and specialist review completion, or the self-review selection rationale when no specialist was useful.
+4. **Verification and review:** Copilot review status (existing, requested and completed, pending, or blocked); local verification and CI results tied to their revisions; CircleCI failure causes with affected revision and run/job links when applicable; and review status. Include spec review applicability, reviewed paths/revisions and head, readiness verdict, and material findings or limitations; retain the derivation map as review evidence. For a different-author review, include the reviewed SHA and specialist review completion, or the self-review selection rationale when no specialist was useful.
 5. **Published actions:** finding/review links and whether approval was submitted or withheld; links to replies to incorrect Copilot comments; and links to threads whose resolved state was confirmed. Never claim a thread was resolved merely because code was changed.
 6. **Remaining work:** unresolved decisions, pending checks, access limitations, and blockers. Identify replies withheld or blocked and addressed threads left unresolved, with their links and reasons.

@@ -7,8 +7,8 @@ Prepared for the installed OpenCode **v2.2.5**. This directory is a staged globa
 - `AGENTS.md`: global engineering guidance, project abbreviations, opt-in delegation policy, PR workflow, and OpenCode runtime instructions.
 - `instructions/`: all five shared engineering, testing, security, delegation, and reporting references.
 - `agents/`: all ten custom Codex roles converted from TOML to OpenCode Markdown agents.
-- `skills/`: all six personal workflow skills from `~/.codex/skills`, plus `fix-node-dependabot-vulnerabilities`, `prompt-master`, and `redcare-returns-analyst` from `~/.agents/skills`. Supporting scripts, references, dependency manifests, and existing tests are included. External skill symlinks were materialized as ordinary files.
-- `commands/`: nine matching slash commands that load their skills in the primary `build` session.
+- `skills/`: all seven personal workflow skills from `~/.codex/skills`, plus `fix-node-dependabot-vulnerabilities`, `prompt-master`, and `redcare-returns-analyst` from `~/.agents/skills`. Supporting scripts, references, dependency manifests, and existing tests are included. External skill symlinks were materialized as ordinary files.
+- `commands/`: ten matching slash commands that load their skills in the primary `build` session.
 - `opencode.json`: default model, reasoning variants, and the local codebase-memory MCP connection.
 - `migration-manifest.json`: source-to-destination inventory.
 
@@ -30,13 +30,14 @@ Copying merges directories and overwrites matching files. It retains other exist
 
 ```text
 /write-spec describe the requested change
+/review-spec path/to/spec.md
 /run-spec-tdd path/to/approved-spec.md
 /implementation-subagents implement the agreed change
 /review-subagents review the current changes
 /github-pr-feedback-checker https://github.com/owner/repository/pull/123
 ```
 
-The commands load skills rather than immediately launching agents. Review and implementation commands authorize only their respective bounded role categories. `/run-spec-tdd` still requires its separate cycle-level assignment approval. The explicit-only delegation workflows and prompt-master are marked `disable-model-invocation: true`; load them by command or explicit user request. Other skills remain discoverable automatically.
+The commands load skills rather than immediately launching agents. `/review-spec` checks correctness, ambiguity, atomicity, and test derivability. The PR feedback workflow loads it automatically for specs added or modified by the PR and explicitly referenced governing specs, before applying fixes or deciding approval; material findings or incomplete required spec review withhold approval under the existing publication rules. Review and implementation commands authorize only their respective bounded role categories. `/run-spec-tdd` still requires its separate cycle-level assignment approval. The explicit-only delegation workflows and prompt-master are marked `disable-model-invocation: true`; load them by command or explicit user request. Other skills remain discoverable automatically.
 
 ## Adaptations and prerequisites
 
@@ -55,6 +56,6 @@ The conversion follows the official [OpenCode agents](https://opencode.ai/docs/a
 ## Verification performed
 
 - OpenCode v2.2.5 loaded all ten custom agents from this staged configuration using an isolated temporary config root and `opencode debug agents --standalone`. Their descriptions, model variants, delegation denials, edit restrictions, environment-file approvals, and graph tool allowlists were checked against the intended conversion.
-- All 28 agent, skill, and command YAML frontmatter documents parsed successfully. All nine skill/command pairs and installed configuration references resolve within this bundle.
+- All 30 agent, skill, and command YAML frontmatter documents parsed successfully. All ten skill/command pairs and installed configuration references resolve within this bundle.
 - The adapted Dependabot skill validator passed using the source skill's existing local dependencies. Copied skill scripts were not run against GitHub or internal APIs.
 - Primary-agent self-review only. No independent subagent review, model inference, live MCP functionality check, or full workflow execution was performed. OpenCode's global default model and agent files load successfully; provider authentication and model access still need an authenticated session.
