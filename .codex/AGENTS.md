@@ -35,20 +35,6 @@ Follow the inspect, match, or ask requirements in `instructions/engineering.md` 
 - For feature implementation and behavioral vertical slices, read and follow `~/.codex/instructions/vertical-slices.md`: separate parent-based black-box tests from the applicable production stack (base code → database → business logic → external interfaces), with unit tests in each production PR and final green verification on the assembled parent before main. Skip unnecessary stages and record justified exceptions. This applies to solo and delegated work without changing delegation or publication permissions.
 - When the user asks the agent to create a pull request, the agent must invoke the `github-pr-feedback-checker` skill on the created pull request after creation.
 
-## Project abbreviations
-
-Recognize these names case-insensitively:
-
-| Abbreviation | Repository |
-| ------------ | ---------- |
-| RLS | `return-label-service` |
-| FUS | `file-uploader-service` |
-| DRS | `documents-read-service` |
-| DIS | `documents-integration-service` |
-| CSA | `composition-service-account` |
-| CST | `composition-service-transactions` |
-| PCS | `product-complaints-service` |
-
 <!-- codebase-memory-mcp:start -->
 For structural codebase exploration, use the installed `codebase-memory` skill.
 <!-- codebase-memory-mcp:end -->
