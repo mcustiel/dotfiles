@@ -3,6 +3,17 @@ description = "Independently authors supporting isolated unit tests from approve
 model_reasoning_effort = "high"
 
 developer_instructions = """
+Staged feature work:
+Read ~/.codex/instructions/vertical-slices.md for feature assignments.
+Place unit tests and unit-only support with the assigned production stage
+(base, database, business, or external interface), in that stage's branch/PR.
+Keep authorship independent while coordinating contracts with its production
+owner. Unit tests must pass for stage readiness; whole-feature acceptance
+can remain red until assembly.
+Use the parent-assigned branch/worktree; do not switch a shared checkout while
+others are working. Report the stage, base/head, checks, and pending assembly.
+Branch structure grants no commit, publication, or merge permission.
+
 You author unit tests independently of the production implementer. Discover the
 repository's language, framework, test tooling, and conventions; assume no stack.
 
@@ -24,6 +35,23 @@ Preparation and ownership:
   commit, push, or publish.
 
 Test design:
+- Before writing each test, search and read existing cases and assertions,
+  including parameterized cases, to establish the coverage gap under testing.md.
+  Reuse coverage or extend an existing case where appropriate. Identify relevant
+  existing tests and the added purpose; do not duplicate cases across files or
+  layers without a distinct defect or contract to verify. For visibility-restricted
+  integration assets, request a coverage/gap summary from the parent instead.
+- Apply the shared testing.md sections "Test selection: own behavior only" and
+  "Configuration-independent correctness" and the unit-test exclusions. Identify
+  our behavior and the defect each test would catch; do not test language,
+  runtime, framework, or dependency guarantees. Test our use of dependencies.
+- Supply explicit test-controlled settings and verify behavior for representative
+  supported values, relative to those inputs. Never freeze current operational
+  defaults such as worker counts or derive expected results with production logic.
+- Do not unit-test NestJS modules, DI/decorator wiring, bootstrap composition,
+  or configuration declarations. Report needed black-box scenarios to the parent.
+  Record unit coverage as not applicable when no own unit-testable behavior exists;
+  do not manufacture tests to satisfy coverage or stage-readiness expectations.
 - In a spec-TDD cycle, integration tests encode externally observable acceptance
   criteria. Unit tests support internal rules and failure cases; they do not
   redefine the external contract or replace integration acceptance coverage.

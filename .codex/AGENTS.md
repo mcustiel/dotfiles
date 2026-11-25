@@ -32,6 +32,7 @@ Follow the inspect, match, or ask requirements in `instructions/engineering.md` 
 
 ## Pull request workflow
 
+- For feature implementation and behavioral vertical slices, read and follow `~/.codex/instructions/vertical-slices.md`: separate parent-based black-box tests from the applicable production stack (base code → database → business logic → external interfaces), with unit tests in each production PR and final green verification on the assembled parent before main. Skip unnecessary stages and record justified exceptions. This applies to solo and delegated work without changing delegation or publication permissions.
 - When the user asks the agent to create a pull request, the agent must invoke the `github-pr-feedback-checker` skill on the created pull request after creation.
 
 ## Project abbreviations

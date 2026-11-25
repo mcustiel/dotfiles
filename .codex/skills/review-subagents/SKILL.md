@@ -11,7 +11,7 @@ Explicit invocation authorizes relevant `code-quality-reviewer`, `security-revie
 
 1. Read `~/.codex/instructions/delegation.md` for assignment, review-selection, snapshot, ownership, and permission requirements. Read `~/.codex/instructions/testing.md` before planning verification, and apply required engineering/security guidance from `~/.codex/AGENTS.md`.
 2. Confirm requirements, acceptance criteria, applicable security criteria, checks performed, and unrelated changes. Supply the explicit comparison base, included changes/files (including relevant staged and untracked files), and stable reviewed state. Do not dispatch a review with missing scope.
-3. Assign each selected reviewer one bounded question, relevant evidence and reading requirements, exclusions, and a completion condition. Reviewers remain read-only. Use independent reviews concurrently when capacity permits, with scoped files frozen or an immutable snapshot.
+3. For staged feature PRs, follow `~/.codex/instructions/vertical-slices.md`: review each production stage against its immediate base, acceptance tests separately, and final assembly for integration and changes since review. Include the stage and expected acceptance red in scope; do not report missing later-stage behavior as a defect in an intentionally incomplete stage. Assess security and correctness of what that stage actually introduces. Assign each selected reviewer one bounded question, relevant evidence and reading requirements, exclusions, and a completion condition. Reviewers remain read-only. Use independent reviews concurrently when capacity permits, with scoped files frozen or an immutable snapshot.
 
 ## Resolve and finish
 

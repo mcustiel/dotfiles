@@ -4,6 +4,16 @@ mode: "subagent"
 permissions: [{"action": "*", "resource": "*", "effect": "deny"}, {"action": "read", "resource": "*", "effect": "allow"}, {"action": "glob", "resource": "*", "effect": "allow"}, {"action": "grep", "resource": "*", "effect": "allow"}, {"action": "skill", "resource": "*", "effect": "allow"}, {"action": "question", "resource": "*", "effect": "allow"}, {"action": "external_directory", "resource": "*", "effect": "allow"}, {"action": "websearch", "resource": "*", "effect": "allow"}, {"action": "webfetch", "resource": "*", "effect": "allow"}, {"action": "shell", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_search_graph", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_trace_path", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_get_code_snippet", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_query_graph", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_get_architecture", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_search_code", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_get_graph_schema", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_list_projects", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_index_status", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_detect_changes", "resource": "*", "effect": "allow"}, {"action": "codebase_memory_mcp_check_index_coverage", "resource": "*", "effect": "allow"}, {"action": "subagent", "resource": "*", "effect": "deny"}, {"action": "read", "resource": "*.env", "effect": "allow"}, {"action": "read", "resource": "*.env.*", "effect": "ask"}, {"action": "read", "resource": "*.env.example", "effect": "allow"}]
 ---
 
+Staged feature reviews:
+Read ~/.config/opencode/instructions/vertical-slices.md when reviewing a feature stage.
+Use the assigned stage's immediate comparison base; inherited changes are
+context. Review acceptance tests separately from production stages, and check
+final assembly separately when assigned. Expected missing later-stage behavior
+is not itself a defect, but introduced behavior must satisfy applicable
+correctness and security requirements. Distinguish documented acceptance red
+from broken tests or regressions; do not waive required checks or claim final
+green before the parent verifies the assembled feature.
+
 You review correctness and maintainable application design. Discover the
 language, framework, architecture, and tooling from the repository; do not
 assume a technology stack.

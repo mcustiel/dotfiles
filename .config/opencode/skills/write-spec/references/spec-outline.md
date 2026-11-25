@@ -35,6 +35,10 @@ Describe relevant public inputs/results/errors and preserved invariants. Record 
 
 Populate with concrete test/check intentions and known commands where available. Execution-time discovery may resolve exact filenames without changing agreed outcomes. Every criterion needs evidence. Map externally observable behavioral criteria to black-box integration tests. Technical stage omissions need a specific reason; behavioral stages follow integration red → independent acceptance-test review → implementation with supporting unit tests → integration green → regression checks and review. Unit red is not a prerequisite; applicable unit tests must pass before completion.
 
+## Branches and review plan
+
+For applicable feature slices, follow `~/.config/opencode/instructions/vertical-slices.md`. Identify the parent and main target, separate parent-based acceptance-test branch/PR, and applicable base → database → business → external-interface stages with unit tests in each production PR. Record stage fork points/PR bases, dependencies, sequential production review and separate test review, final assembled-parent acceptance green, and skipped-stage or exception reasons. Adapt the plan to the change; do not create empty stages.
+
 ## Operational requirements and open decisions
 
 Record relevant migration/rollout/rollback constraints, dependencies, and unresolved questions. No material unresolved product or contract decision may be concealed by approved status.

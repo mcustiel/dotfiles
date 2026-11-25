@@ -50,6 +50,8 @@ For **technical criteria**, preserve `write-spec`'s measurable-check model inste
 
 Check the slices/verification mapping: each criterion maps to a coherent slice, supported entry point or check, explicit expected outcome, and appropriate gate. Behavioral acceptance uses black-box integration tests; technical checks and preserved regression baselines follow `write-spec`. Technical integration/unit omissions need criterion-specific justification; missing tooling is a blocker. Do not require exact test filenames when discovery can settle them without changing outcomes. Assess test intentions and expectations, not just the presence of test names.
 
+For applicable feature specs, read `~/.config/opencode/instructions/vertical-slices.md` and assess the branch/review plan: separate parent-based acceptance tests, meaningful production stages with their unit tests, correct fallback ancestry when stages are absent, sequential production and separate acceptance review, and final assembled-parent green. Accept justified fewer-stage exceptions; do not demand empty PRs or treat this plan as publication/delegation permission.
+
 Derived scenarios are review evidence and test intentions. They do not establish that tests exist, execute successfully, or verify implementation.
 
 ## Report and clarify

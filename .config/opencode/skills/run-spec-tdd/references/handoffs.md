@@ -10,6 +10,7 @@ Identify the approved spec revision and slices. List proposed agents, owned file
 
 - Approved spec revision/digest, slice and criterion IDs, applicable contracts and security criteria.
 - One bounded objective; owned files/responsibilities and explicit exclusions; one owner per shared file.
+- Applicable stage, branch/worktree, fork point and immediate PR base, parent/main target, stage unit/static checks, and excluded sibling acceptance assets, following `~/.config/opencode/instructions/vertical-slices.md`. Separate unit authors still deliver their tests in the corresponding production-stage PR.
 - Relevant paths/interfaces and evidence rather than repeated exploration.
 - Intended checks, permitted execution, readiness requirements, and completion condition.
 - Explicit comparison base, included changes (including relevant staged and untracked files), and stable reviewed state for reviews; no default review diff.
@@ -32,6 +33,7 @@ Record only what is needed to resume and assess the result:
 
 - Spec path, approved revision/digest, and actual approval evidence; delegation approval and bounded scope.
 - Slice/criterion IDs, stage, owners/agent IDs, unresolved decisions and next action.
+- Branch/PR map with current bases/heads, skipped-stage reasons, independent acceptance and sequential production review status, authorized merges, original parent-based red, temporary assembly evidence, and actual assembled-parent green or pending checks.
 - Production writer context mode, first-pass readiness, prior/accidental integration-test exposure, and any later disclosure with reason and scope.
 - Source revision, included working-tree changes and untracked assets; artifact identity/configuration as applicable. Without Git, use a scoped file manifest/content digests.
 - Exact executed command and working directory, outcome, discovered tests, and concise safe failure evidence. Identify expected failing assertions separately from environment/compiler/discovery errors.

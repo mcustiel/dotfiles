@@ -14,6 +14,9 @@ This file defines shared assignment and coordination requirements. It does not a
 
 ## Ownership and coordination
 
+- For feature slices, read `~/.config/opencode/instructions/vertical-slices.md` before assigning work. Include the stage, branch/worktree, fork point, PR comparison base, owned files/contracts, and stage completion checks. Keep acceptance authorship on its parent-based branch and each production stage's unit tests with that stage; strict spec-TDD still uses independent test authors.
+- Branch sequencing does not authorize concurrent checkout switches in a shared directory. Use isolated worktrees when authorized tasks need different branches concurrently, or serialize branch work and commands through the primary agent. Do not switch an active writer's checkout or mix another stage's uncommitted files into a PR. Review stage diffs against their explicit immediate bases and final integration separately.
+
 - Assign application code and relevant unit tests to the production writer. Assign integration tests, fixtures, provider stubs, and explicitly identified test infrastructure to the integration writer. Strict spec-TDD uses its separate authorship rules.
 - Give shared dependencies, lockfiles, configuration, schemas, generated files, and shared fixtures one owner. Parallelize only when contracts are stable and edit scopes do not overlap.
 - Agents are not alone in the workspace: preserve others' edits and unrelated existing work. Coordinate scope, contract, and shared-file changes through the primary agent.

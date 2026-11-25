@@ -25,6 +25,8 @@ the primary agent performed self-review.
 
 ## Writer handoffs
 
+For staged feature work, include the branch/PR map and stage-specific readiness from `~/.codex/instructions/vertical-slices.md`: fork point, current comparison base/head, owned changes, expected acceptance red, stage unit/static results, and pending assembly/parent checks. Keep the acceptance-test review separate from production-stage reviews.
+
 Keep readiness, completion, and failure handoffs concise. Reference files and
 evidence instead of repeating the assignment, raw logs, or tool-call history.
 Preserve required readiness details, material failures, uncertainty, unresolved
@@ -33,7 +35,7 @@ readiness does not establish integration execution or combined feature completio
 
 ## Completion reports
 
-- Report resulting behavior, relevant checks and results, review status, material findings, and unresolved limitations.
+- Report resulting behavior, relevant checks and results, review status, material findings, and unresolved limitations. For staged feature work, include skipped-stage reasons, branch/PR review and merge status, initial acceptance red, and final assembled-parent green evidence; distinguish temporary assembly results from actual parent verification and readiness for main.
 - Distinguish passed, failed, and unperformed checks. Never claim verification or review that did not occur.
 - Keep reporting concise and proportional to the change. Lead with the outcome and material findings; omit repeated handoffs, raw logs, and routine checklist narration. Surface material security gaps and decisions requiring user or platform input.
 

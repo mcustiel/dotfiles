@@ -11,12 +11,31 @@
 - **Test discovery:** When adding or moving tests, verify that the exact local and CI commands discover them. Inspect filename filters, include/exclude patterns, and runner configuration; a passing local default command is insufficient.
 - **Regression durability:** Temporary verification scripts provide execution evidence but do not replace committed regression tests for fixed defects. Before completion, ensure meaningful regression coverage is tracked and included in normal local and CI workflows, or explicitly explain why it cannot be.
 
+### Test selection: own behavior only
+
+- Before writing any unit or black-box integration test, search existing tests for the same behavior and case, then read the relevant setup, inputs, assertions, and parameterized cases. Compare what they actually verify, not just test names or line-coverage reports. Check both suites where relevant and permitted; if test visibility is restricted by an approved workflow, obtain a coverage/gap summary from the primary agent without bypassing that restriction.
+- Reuse existing coverage when it already establishes the intended case. If it is incomplete, extend the existing scenario or parameterized cases where appropriate; add a separate test only for an identified gap. Before writing, briefly identify the relevant existing tests and the additional behavior or defect the proposed change will cover, or record that no matching coverage was found.
+- Overlap between unit and black-box coverage needs a distinct purpose, such as an internal boundary/failure rule versus end-to-end wiring and observable effects. Do not duplicate a case merely in a different file or test layer, or with different incidental fixture values. Do not remove required black-box acceptance coverage because a mocked unit test exercises related logic.
+- Before adding a test, identify the behavior owned by this application and the realistic defect in that behavior that the assertion would catch. Do not add tests whose only target is language/runtime behavior, a standard library, a framework, or an external dependency. For example, do not test that TypeScript/JavaScript `map` transforms an array or that a dependency implements its documented API.
+- Exercise dependencies only as needed to verify our own decisions, transformations, orchestration, error handling, and externally observable effects. Testing our mapping rules is useful; testing `map` itself is not. Provider stubs supply controlled responses so tests can check our handling of them, not certify the provider or its SDK.
+- Do not add tests for coverage percentages, one test per file, or stage-readiness formalities. If a change contains only wiring or configuration and has no meaningful unit-test target, record why unit tests are not applicable and verify the relevant black-box behavior.
+
+### Configuration-independent correctness
+
+- Test correctness across supported configuration values, not the current values in production defaults, environment files, or deployment manifests. A valid tuning change must not require assertion or snapshot updates. Do not pin worker counts, concurrency, batch sizes, retry counts, timeouts, or similar operational settings to their current values.
+- Supply explicit test-controlled configuration through established seams. Choose representative supported values, including relevant boundaries, to detect code that ignores configuration or accidentally hardcodes a value. Assert the behavior relative to the supplied value; do not merely read a production setting and compare it to itself. Keep these expectations independent of production logic that computes results.
+- For example, in `gcp-documents-migration-service`, configure different worker limits in tests and verify our scheduler respects each supplied limit, completes eligible work, and handles failures as required. Do not assert that the service's default or deployed worker count equals today's number. Use controlled synchronization rather than timing assumptions when verifying concurrency.
+- Where black-box support needs effective configuration for setup or observation, obtain it from the test-controlled application configuration rather than copying a deployment value. Keep assertions about required outcomes independent of production policy helpers.
+- Configuration-independent tests still verify our own parsing, validation, fallback, and behavior-selection rules where those contain application logic. Use explicit inputs and assert the documented rule. Distinguish tunable settings from fixed business/protocol contracts: a value explicitly required by such a contract may have an independent exact expectation; a current configuration value alone is not such a contract.
+
 ### Unit tests
 
 - Keep tests fast, deterministic, isolated, repeatable, and independent of external services or special environment setup.
 - Match existing unit tests in the relevant repository area, including their suite nesting, setup, test bodies, fixtures, mocking, and assertions. Use RSpec-style `describe`, `beforeEach`, and `it` only when consistent with those conventions, or when no established convention exists and repository guidance permits it.
 - Name tests by context and expected behavior. Avoid complicated shared setup and order dependence.
 - When mocking dependencies, verify relevant arguments and contractual effects without coupling assertions to incidental implementation steps.
+- Do not unit-test NestJS module declarations, dependency-injection wiring, decorator metadata/fallback wiring, bootstrap composition, or configuration declarations. Do not add module-compilation-only tests, provider/import/export inventories, metadata snapshots, or assertions of configured values. This includes tests like `file-uploader-service/src/decorator-metadata-fallback.spec.ts` and `src/rest-api.module.spec.ts`; these are examples of excluded test targets, not templates.
+- Verify wiring and configuration integration through black-box tests that start the real application and exercise the affected supported entry points and outcomes. If wiring errors could escape existing black-box coverage, add the missing behavioral scenario there. Test application rules separately when they warrant unit coverage; do not turn framework or configuration declarations into unit-test targets.
 
 ### Integration tests
 
@@ -157,6 +176,190 @@ Use observations appropriate to each boundary:
 - When establishing or migrating conventions, document representative
   examples for the HTTP, messaging, persistence, and job boundaries actually
   used by the repository.
+
+## Worked examples
+
+These examples illustrate the rules above; they are not repository templates or
+new application requirements. Adapt their syntax, setup, helpers, and placement
+to the inspected suite. TypeScript/Jest notation is illustrative. The operation
+router and return-label contracts below are hypothetical; confirm real contracts
+before choosing inputs, expected values, or failure behavior.
+
+### Independent contract values and dependency arguments
+
+Suppose an application-owned operation router accepts the public tokens `+` and
+`/`, delegates calculation, returns the dependency result, rejects other tokens,
+and records a metric only for division by zero. The target is our dispatch and
+error handling, not JavaScript arithmetic or the dependency's implementation.
+
+```typescript
+describe('OperationRouter', () => {
+  let dependency: { sum: jest.Mock; div: jest.Mock };
+  let metrics: { divisionByZero: jest.Mock };
+  let router: OperationRouter;
+
+  beforeEach(() => {
+    dependency = { sum: jest.fn(), div: jest.fn() };
+    metrics = { divisionByZero: jest.fn() };
+    router = new OperationRouter(dependency, metrics);
+  });
+
+  describe('when adding 2 and 3', () => {
+    let result: number;
+
+    beforeEach(() => {
+      dependency.sum.mockReturnValue(5);
+      result = router.operate('+', 2, 3);
+    });
+
+    it('returns the dependency result', () => {
+      expect(result).toBe(5);
+    });
+
+    it('passes both operands to addition', () => {
+      expect(dependency.sum).toHaveBeenCalledWith(2, 3);
+      expect(dependency.div).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when dividing 6 by 2', () => {
+    beforeEach(() => {
+      dependency.div.mockReturnValue(3);
+    });
+
+    it('returns the result and preserves operand order without recording division by zero', () => {
+      const result = router.operate('/', 6, 2);
+
+      expect(result).toBe(3);
+      expect(dependency.div).toHaveBeenCalledWith(6, 2);
+      expect(dependency.sum).not.toHaveBeenCalled();
+      expect(metrics.divisionByZero).not.toHaveBeenCalled();
+    });
+  });
+
+  it.each(['-', '*', '', ' ', 'divide'])(
+    'rejects unsupported operation %j without invoking dependencies',
+    operation => {
+      expect(() => router.operate(operation, 6, 2))
+        .toThrow('Unsupported operation');
+      expect(dependency.sum).not.toHaveBeenCalled();
+      expect(dependency.div).not.toHaveBeenCalled();
+      expect(metrics.divisionByZero).not.toHaveBeenCalled();
+    },
+  );
+});
+```
+
+The literal `+` is an independent public-contract input. Importing the
+production `SUM_OPERATION` constant would allow a change to `-` to change both
+implementation and test unnoticed. This does not justify copying tunable
+configuration values into tests.
+
+A fixed mock return value alone cannot detect reversed division arguments;
+`toHaveBeenCalledWith(6, 2)` can. The metric assertion detects a condition changed
+from zero to nonzero. Cover the metric's required positive case separately when
+it is not already covered, using the agreed zero-divisor behavior. Choose invalid
+cases for distinct risks (another operator, empty input, whitespace, an unknown
+word); do not generate a large arbitrary list merely for volume. Assert missing
+or wrong-type values at the real untyped boundary rather than bypassing types in
+an unrelated domain unit test.
+
+### Deterministic dates and meaningful boundaries
+
+For a shipped-date return-window rule, avoid `new Date()` tied to wall-clock
+time and avoid importing the production cutoff to calculate every expectation.
+Suppose the agreed contract includes shipments exactly 30 elapsed days old, and
+excludes older shipments. Control the clock at `2026-06-15T12:00:00.000Z` through
+the established clock seam or fake-timer support, then check these explicit cases:
+
+| Shipped at | Eligible | Defect detected |
+| --- | --- | --- |
+| `2026-06-14T12:00:00.000Z` | Yes | Rejecting an ordinary eligible shipment |
+| `2026-05-16T12:00:00.000Z` | Yes | Excluding the inclusive boundary |
+| `2026-05-16T11:59:59.999Z` | No | Accepting a shipment just outside the window |
+
+Restore any modified global clock after each test. If the actual rule uses
+calendar days, a business timezone, or a configurable window, derive cases from
+that rule instead. Do not silently turn this illustrative 30-day rule into a
+repository requirement.
+
+### Configuration behavior and existing coverage
+
+For a scheduler with a configurable worker limit, first read the existing
+scheduler cases. If they already cover completion at limit `1`, extend their
+parameterized cases with another supported limit such as `3` when that exposes
+a hardcoded-limit risk; do not create a duplicate suite with different job IDs.
+
+Use more eligible jobs than the supplied limit and a controlled worker gate.
+Keep started workers pending; observe that the configured number can start and
+no additional job starts while all slots are occupied, using an established
+scheduler-idle signal or bounded observation. Release a slot, observe another
+job start, then release remaining work and verify every eligible job completes
+and peak active work never exceeds the supplied limit. Release gates in cleanup
+even on failure. An upper-bound assertion alone would let a scheduler that
+never starts work pass. Do not use arbitrary sleeps or assert today's deployed
+worker count.
+
+### A black-box scenario verifies all relevant outputs
+
+Suppose an agreed return-label contract requires an HTTP `201` response, a
+stored label, one creation event, and a carrier request. A scenario should express
+the following steps through the suite's existing semantic support:
+
+```text
+Given an authenticated customer, an eligible order, and a unique request ID
+And a carrier stub configured to return a known label reference
+And an event listener registered before the request
+When the customer requests a return label through the real HTTP endpoint
+Then observe the HTTP status, headers, and body
+And independently read the stored label
+And wait with a deadline for the event matching this request
+And observe the carrier requests matching this request
+Then verify 201 and the required response fields
+And verify stored customer, tenant, order, and carrier reference
+And verify event payload, correlation ID, and required routing/properties
+And verify the carrier request's method, path, and required data
+And verify exactly one event over the bounded observation/completion interval
+```
+
+Execution and observation return data; verification checks that data without
+performing more I/O. Build expected records and payloads from the agreed contract
+and explicit scenario inputs, not production mappers. Only assert an exact event
+count when the delivery contract requires it; otherwise verify the agreed
+duplicate-handling behavior. A first matching event does not prove that no
+duplicates followed. Include each output only when the actual feature uses it.
+
+For a consumer entry point, publish a real message through the controlled broker
+and observe the resulting application effects. For a job entry point, run the
+supported command through existing support and observe exit code, stdout,
+stderr, and relevant effects, including a nonzero-exit scenario. Importing and
+calling the internal handler does not establish entry-point wiring.
+
+### Rejected requests and downstream failures
+
+For a required-field rejection, send raw JSON with that field actually omitted;
+do not use a fixture builder that restores it. Check the agreed status and safe
+error body, no new stored record, no carrier request, and no creation event.
+For asynchronous forbidden effects, use a correlated bounded observation period
+or a processing-completion signal before asserting absence. An immediate empty
+queue read does not establish absence.
+
+For cross-tenant access, authenticate as a customer in tenant A and request a
+protected resource belonging to tenant B. Verify the agreed denial, no protected
+data in the response, and no forbidden writes, provider calls, or messages. A
+spoofed tenant field alone does not establish the authenticated identity.
+
+For carrier timeouts or database write failures, induce the failure through the
+controlled dependency boundary and verify the documented response, persistence
+state, events, and retry/compensation behavior. Do not guess whether a partial
+record or retry is allowed. A mocked repository exception in a unit test can
+establish our error-handling decision; a separate black-box scenario establishes
+that the real application and adapter deliver the required observable outcome.
+
+## Acceptance tests across staged PRs
+
+- For feature slices, read and follow `~/.codex/instructions/vertical-slices.md`. Author black-box tests first on a branch from the parent, separately from the production stack. The primary agent establishes behavioral red against the unchanged parent and green on the fully assembled parent. Unit tests live with their production stage and must pass for that stage to be ready.
+- Intentional feature assertion failures on the acceptance PR are evidence of missing behavior, not permission to skip tests, relax assertions, bypass protection, or ignore unrelated failures. Stage readiness does not require whole-feature acceptance green. Test-only red readiness confirms that the existing app and harness run; supporting feature unit tests need not exist yet. Strict spec-TDD retains its additional independent review and authorship gates.
 
 ## Integration execution and readiness
 

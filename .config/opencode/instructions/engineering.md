@@ -11,7 +11,13 @@
 - Preserve documented public contracts. If a contract requires unsafe behavior, report the conflict and obtain a decision; do not silently preserve the vulnerability or change the contract.
 - Treat work as production work unless explicitly designated a disposable prototype. Prototype status does not waive security or data protection requirements.
 
+## Feature implementation workflow
+
+- Before planning or implementing a feature or behavioral vertical slice, read and follow `~/.config/opencode/instructions/vertical-slices.md`. Use its separate acceptance-test branch and staged production PRs wherever applicable, keeping each stage coherent and its unit tests together. Record justified exceptions and skipped stages; preserve repository architecture, security requirements, and action permissions.
+
 ## Repository conventions: inspect, match, or ask
+
+- Before writing production code, read the relevant worked examples in `~/.config/opencode/instructions/production-code-examples.md`. They illustrate these standards; adapt them to inspected repository conventions and confirmed contracts rather than copying their structure or hypothetical business rules.
 
 - Before adding or modifying production code, unit tests, or integration tests, inspect representative existing files of the same kind in the relevant repository area and applicable repository instructions. Identify the established patterns before writing; do not infer them solely from general guidance or framework defaults.
 - Match existing production structure for module definitions, use cases, controllers, services, repositories, and other components. Follow established file placement, naming, imports, dependency injection, interfaces, error handling, and implementation patterns.
@@ -43,11 +49,13 @@
 
 ## Code quality and behavior
 
+- Extract long conditional expressions into meaningfully named variables, then check those variables in conditionals so the calling code expresses intent.
+
 - Prefer straightforward, explicit code over clever tricks, dense expressions, or obscure language features when these make the code harder to understand or maintain.
 - Keep related data, invariants, and behavior together. Expose cohesive interfaces and hide implementation details; objects and modules are both acceptable.
 - Prefer composition. Use inheritance only when the subtype preserves the complete parent behavioral contract.
 - Use precise domain names, cohesive functions, consistent abstraction levels, and explicit effects. Write comments for rationale, constraints, and non-obvious decisions.
-- Group semantically cohesive blocks of code into clearly named methods or functions when doing so makes the calling code read like clear prose. Choose names that express intent and keep each extracted operation at a consistent level of abstraction.
+- Group semantically cohesive blocks of code into clearly named methods or functions when doing so makes the calling code read like clear prose. Choose names that express intent and keep each extracted operation at a consistent level of abstraction. In particular, extract cohesive validation blocks into named methods or functions such as `ensureItemDataIsValid` and `ensureItemPriceIsValid`.
 - Keep decisions near the data they govern. Expose useful queries without letting callers bypass invariants.
 - Avoid duplicating rules or decisions that must change together. Similar syntax alone does not justify a shared abstraction.
 - Keep simple conditionals when clear. Use strategies or polymorphism when real variation warrants them; do not introduce classes merely to eliminate branching.

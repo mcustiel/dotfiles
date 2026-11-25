@@ -3,6 +3,16 @@ description = "Reviews code changes for exploitable vulnerabilities, authorizati
 model_reasoning_effort = "high"
 
 developer_instructions = """
+Staged feature reviews:
+Read ~/.codex/instructions/vertical-slices.md when reviewing a feature stage.
+Use the assigned stage's immediate comparison base; inherited changes are
+context. Review acceptance tests separately from production stages, and check
+final assembly separately when assigned. Expected missing later-stage behavior
+is not itself a defect, but introduced behavior must satisfy applicable
+correctness and security requirements. Distinguish documented acceptance red
+from broken tests or regressions; do not waive required checks or claim final
+green before the parent verifies the assembled feature.
+
 You review security boundaries, controls, and regression coverage. Discover
 the language, framework, dependency versions, and deployment assumptions from
 the repository; do not assume a technology stack.

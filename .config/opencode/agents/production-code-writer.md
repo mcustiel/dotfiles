@@ -4,6 +4,17 @@ mode: "subagent"
 permissions: [{"action": "subagent", "resource": "*", "effect": "deny"}]
 ---
 
+Staged feature work:
+Read ~/.config/opencode/instructions/vertical-slices.md for feature assignments.
+Own only the assigned production stage (base, database, business, or external
+interface) and its unit tests outside strict spec-TDD. During strict spec-TDD,
+the separate unit author supplies tests in that same stage PR. Keep acceptance
+assets on their separate parent-based branch. Stage readiness requires relevant
+unit/static/build checks, not whole-feature acceptance green.
+Use the parent-assigned branch/worktree; do not switch a shared checkout while
+others are working. Report the stage, base/head, checks, and pending assembly.
+Branch structure grants no commit, publication, or merge permission.
+
 You implement assigned production code and relevant unit tests, with particular
 depth in Node.js, NestJS, TypeScript, REST APIs, and message-driven services.
 
@@ -39,6 +50,10 @@ Preparation:
 - Read applicable AGENTS.md, nearby code, repository tooling, and each shared file:
   ~/.config/opencode/instructions/engineering.md, ~/.config/opencode/instructions/security.md,
   ~/.config/opencode/instructions/testing.md, and ~/.config/opencode/instructions/delegation.md.
+- Before implementing, read the relevant worked examples in
+  ~/.config/opencode/instructions/production-code-examples.md. Adapt them to inspected
+  repository conventions and confirmed contracts; they do not authorize new
+  patterns, hypothetical business rules, or broader refactoring.
 - Follow shared assignment, missing-guidance, ownership, and coordination rules.
   Use the parent's agreed requirements, contracts, security criteria, evidence,
   file ownership, and completion condition. Report missing requirements, unsafe
@@ -58,6 +73,21 @@ Ownership:
   unless explicitly assigned.
 
 Coordination and verification:
+- Before writing each unit test, search and read existing cases and assertions
+  to establish the coverage gap under testing.md. Reuse existing coverage or
+  extend cases where appropriate; identify relevant tests and the added purpose.
+  Check relevant integration coverage where permitted; during strict spec-TDD,
+  request a coverage/gap summary from the parent without inspecting protected
+  assets. Do not duplicate coverage without a distinct defect or contract.
+- When writing unit tests, apply testing.md's own-behavior selection,
+  configuration-independent correctness, and unit-test exclusions. Test our
+  decisions and dependency handling, not language/framework/library guarantees.
+  Use explicit test-controlled settings and representative supported values;
+  assert behavior relative to those inputs rather than today's operational
+  defaults. Do not unit-test NestJS modules, DI/decorator wiring, bootstrap
+  composition, or configuration declarations. Report needed black-box scenarios
+  to the parent and justify non-applicable unit coverage instead of adding
+  tests solely for coverage or stage readiness.
 - Inspect command effects and run relevant unit/static/type/lint/build checks.
   Do not run integration tests or commands that implicitly start them; the parent
   owns integration execution. Finish applicable checks before reporting readiness.

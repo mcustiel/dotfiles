@@ -56,6 +56,12 @@ Resolve an explicit PR URL or number first; otherwise infer from the current rep
 
 Record the PR URL, base branch, head repository and branch, and current remote head SHA. Inspect local branch, remotes, status, and applicable instructions before making changes. Use a clean checkout or isolated worktree when needed; preserve existing work and never bundle unrelated local changes. Confirm that the checkout represents the PR's current head before relying on line locations or editing.
 
+## Staged feature PRs
+
+When the PR belongs to a staged feature, read `~/.config/opencode/instructions/vertical-slices.md`. Verify its stage, intended base, parent/main target, dependency PRs, and current head before assessing scope. Review the stage's own diff against its immediate base rather than repeatedly reviewing inherited changes. Preserve separate acceptance-test review and unit tests within their production stages. Correctness and security of introduced behavior still apply.
+
+For a declared acceptance-test PR with recorded behavioral red against the unchanged parent, classify those specific expected feature assertions as intentional red, not production fixes to add to this PR or assertions to suppress. Do not require later production stages to exist in an incomplete stage. Build, discovery, harness, environment, unrelated regression, unit/static, and unexpected failures still require investigation. Report expected-red CI accurately: required-check failures still withhold approval/merge readiness, and this workflow never permits bypassing protection or changing CI to conceal failures. Require acceptance green on the assembled parent before final main readiness. Apply the existing identity, scope, publication, and approval gates unchanged.
+
 ## Review applicable specs
 
 Inspect the complete PR file list and diff using repository spec conventions, defaulting to `specs/**/*.md`. Review specifications added or modified by the PR, including renamed specs with content changes, and existing specs explicitly referenced by the PR as governing its changes. Do not review unrelated repository specs. A removed spec is context for the change, not a current spec to approve; report a missing governing contract when relevant. If discovery is incomplete, report that limitation rather than claiming no applicable spec exists.
