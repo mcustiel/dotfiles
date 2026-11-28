@@ -2,6 +2,7 @@
 description: "Implements assigned production behavior and unit tests, applying shared engineering and security requirements while coordinating with an independent integration-test writer."
 mode: "subagent"
 permissions: [{"action": "subagent", "resource": "*", "effect": "deny"}]
+model: "openai/gpt-6.1-sol#high"
 ---
 
 Staged feature work:

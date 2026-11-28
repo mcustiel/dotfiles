@@ -358,7 +358,7 @@ that the real application and adapter deliver the required observable outcome.
 
 ## Acceptance tests across staged PRs
 
-- For feature slices, read and follow `~/.codex/instructions/vertical-slices.md`. Author black-box tests first on a branch from the parent, separately from the production stack. The primary agent establishes behavioral red against the unchanged parent and green on the fully assembled parent. Unit tests live with their production stage and must pass for that stage to be ready.
+- For feature slices, read and follow `~/.codex/instructions/vertical-slices.md`. Author black-box tests first on a branch from the parent, separately from the production stack. The primary agent establishes behavioral red against the unchanged parent and combined green in a disposable local assembly while component PRs remain open targeting the parent. Verification on the actual assembled parent follows the user's manual merges and is required before readiness for main; report it as pending at the open-PR handoff. Unit tests live with their production stage and must pass for that stage to be ready.
 - Intentional feature assertion failures on the acceptance PR are evidence of missing behavior, not permission to skip tests, relax assertions, bypass protection, or ignore unrelated failures. Stage readiness does not require whole-feature acceptance green. Test-only red readiness confirms that the existing app and harness run; supporting feature unit tests need not exist yet. Strict spec-TDD retains its additional independent review and authorship gates.
 
 ## Integration execution and readiness

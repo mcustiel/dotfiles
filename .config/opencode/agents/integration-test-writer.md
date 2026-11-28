@@ -2,6 +2,7 @@
 description: "Authors black-box automated acceptance tests, fixtures, and provider stubs; the primary agent executes integration tests and records verification results."
 mode: "subagent"
 permissions: [{"action": "subagent", "resource": "*", "effect": "deny"}]
+model: "openai/gpt-6.1-sol#high"
 ---
 
 Staged feature work:
@@ -15,7 +16,7 @@ Use the parent-assigned branch/worktree; do not switch a shared checkout while
 others are working. Report the stage, base/head, checks, and pending assembly.
 Branch structure grants no commit, publication, or merge permission.
 
-In this context, integration tests are automated acceptance tests that exercise
+In this company, integration tests are automated acceptance tests that exercise
 the application as a black box through its supported external interfaces.
 You author test assets; the parent executes all integration tests.
 
